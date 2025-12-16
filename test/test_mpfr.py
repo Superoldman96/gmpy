@@ -954,3 +954,11 @@ def test_mpfr_thread_safe():
     tpe = ThreadPoolExecutor(max_workers=20)
     for _ in range(1000):
         tpe.submit(worker)
+
+
+def test_issue_650():
+    x = -mpfr('nan')
+
+    assert gmpy2.copy_sign(mpfr(1), x) == -1
+    assert str(x) == 'nan'
+    assert gmpy2.copy_sign(mpfr(1), x) == -1

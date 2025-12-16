@@ -511,3 +511,18 @@ def test_mpc_thread_safe():
     tpe = ThreadPoolExecutor(max_workers=20)
     for _ in range(1000):
         tpe.submit(worker)
+
+
+def test_issue_650():
+    x = -mpfr('nan')
+    z = mpc(x, 1)
+
+    assert gmpy2.copy_sign(mpfr(1), z.real) == -1
+    assert str(z) == 'nan+1.0j'
+    assert gmpy2.copy_sign(mpfr(1), z.real) == -1
+
+    z = mpc(1, x)
+
+    assert gmpy2.copy_sign(mpfr(1), z.imag) == -1
+    assert str(z) == '1.0+nanj'
+    assert gmpy2.copy_sign(mpfr(1), z.imag) == -1
