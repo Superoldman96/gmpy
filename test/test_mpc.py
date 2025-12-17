@@ -427,6 +427,10 @@ def test_mpc_div():
     with gmpy2.context(trap_divzero=True):
         with pytest.raises(gmpy2.DivisionByZeroError):
             mpc(15, 15)/mpc(0)
+        with pytest.raises(gmpy2.DivisionByZeroError):
+            mpfr(1)/mpc(0)
+        with pytest.raises(gmpy2.DivisionByZeroError):
+            mpc(1)/mpfr(0)
 
     assert aj / float('inf') == mpc('0.0+0.0j')
     assert aj / float('-inf') == mpc('-0.0-0.0j')
