@@ -1,10 +1,11 @@
 from concurrent.futures import ThreadPoolExecutor
 from fractions import Fraction
 import cmath
+import sys
 
 import pytest
 from hypothesis import example, given, settings
-from hypothesis.strategies import complex_numbers
+from hypothesis.strategies import complex_numbers, floats
 from supportclasses import a, b, c, cx, d, q, r, z
 
 import gmpy2
@@ -530,3 +531,49 @@ def test_issue_650():
     assert gmpy2.copy_sign(mpfr(1), z.imag) == -1
     assert str(z) == '1.0+nanj'
     assert gmpy2.copy_sign(mpfr(1), z.imag) == -1
+
+
+@pytest.mark.skipif(sys.version_info < (3, 14), reason="requires v3.14+")
+def test_mpc_mixed_arithmetics():
+    from itertools import combinations_with_replacement
+    from math import inf, nan
+    from operator import add, mul, sub, truediv
+
+    gmpy2.set_context(gmpy2.ieee(64))
+    gmpy2.get_context().trap_divzero = True
+    cases = [0.0, -0.0, inf, -inf, nan, -1.0, 1.0, 2.0, -3.0]
+
+    for x in cases:
+        gx = gmpy2.mpfr(x)
+        for z in combinations_with_replacement(cases, 2):
+            z = complex(*z)
+            gz = gmpy2.mpc(z)
+            for op in [add, mul, sub, truediv]:
+                try:
+                    r1 = op(x, z)
+                except ZeroDivisionError:
+                    try:
+                        op(gx, gz)
+                        assert False
+                    except ZeroDivisionError:
+                        g1 = r1 = 0j
+                else:
+                    g1 = op(gx, gz)
+                try:
+                    r2 = op(z, x)
+                except ZeroDivisionError:
+                    try:
+                        op(gz, gx)
+                        assert False
+                    except ZeroDivisionError:
+                        g2 = r2 = 0j
+                else:
+                    g2 = op(gz, gx)
+                if op not in [sub, truediv]:
+                    assert str(r1) == str(r2)
+                    assert str(g1) == str(g2)
+                if str(r1) != str(complex(g1)):
+                    assert cmath.isfinite(r1) and x and all(_ for _ in [z.real,
+                                                                        z.imag])
+                    assert cmath.isclose(r1, complex(g1))
+                assert str(r2) == str(complex(g2))
