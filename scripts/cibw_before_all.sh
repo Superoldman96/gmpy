@@ -3,7 +3,7 @@
 set -e -x
 
 GMP_VERSION=6.3.0
-MPFR_VERSION=4.2.1
+MPFR_VERSION=4.2.2
 MPC_VERSION=1.3.1
 
 PREFIX="$(pwd)/.local/"
