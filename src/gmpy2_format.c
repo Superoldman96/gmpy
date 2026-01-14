@@ -194,30 +194,23 @@ GMPy_MPZ_Format(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(GMPy_doc_mpfr_format,
 "x.__format__(fmt) -> str\n\n"
-"Return a Python string by formatting 'x' using the format string\n"
-"'fmt'. A valid format string consists of:\n\n"
-"     optional alignment code:\n\n"
-"        '<' -> left shifted in field\n"
-"        '>' -> right shifted in field\n"
-"        '^' -> centered in field\n\n"
-"     optional leading sign code\n\n"
-"        '+' -> always display leading sign\n"
-"        '-' -> only display minus for negative values\n"
-"        ' ' -> minus for negative values, space for positive values\n\n"
-"     optional width.precision\n\n"
-"     optional rounding mode:\n\n"
-"        'U' -> round toward plus Infinity\n"
-"        'D' -> round toward minus Infinity\n"
-"        'Y' -> round away from zero\n"
-"        'Z' -> round toward zero\n"
-"        'N' -> round to nearest\n\n"
-"     optional conversion code:\n\n"
-"        'a','A' -> hex format\n"
-"        'b'     -> binary format\n"
-"        'e','E' -> scientific format\n"
-"        'f','F' -> fixed point format\n"
-"        'g','G' -> fixed or float format\n\n"
-"The default format is '.6f'.");
+"Return a Python string by formatting 'x' using the format string 'fmt'.\n\n"
+"The format specification adopts the same general form as Python's\n"
+"Format Specification Mini-Language.  All of Python's format types are\n"
+"supported, with the exception of 'n'.  Format types 'a' and 'A' (use\n"
+"uppercase digits) allow to represent floating-point number as a\n"
+"C99-style hexadecimal string.  Format type 'b' allows format\n"
+"number in binary.\n\n"
+"Five rounding modes are supported, as for `context.round`:\n\n"
+"    * 'U': rounding towards plus infinity\n"
+"    * 'D': rounding towards minus infinity\n"
+"    * 'Y': rounding away from zero\n"
+"    * 'Z': rounding towards zero\n"
+"    * 'N': rounding to nearest\n\n"
+"The rounding option must be set right before the presentation type.\n"
+"If it's not specified, the context's rounding mode is used.\n\n"
+"The default format is like str(x) output, as altered by the other\n"
+"format modifiers.");
 
 static PyObject *
 GMPy_MPFR_Format(PyObject *self, PyObject *args)
@@ -434,32 +427,9 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(GMPy_doc_mpc_format,
 "x.__format__(fmt) -> str\n\n"
-"Return a Python string by formatting 'x' using the format string\n"
-"'fmt'. A valid format string consists of:\n\n"
-"     optional alignment code:\n\n"
-"        '<' -> left shifted in field\n"
-"        '>' -> right shifted in field\n"
-"        '^' -> centered in field\n\n"
-"     optional leading sign code\n\n"
-"        '+' -> always display leading sign\n"
-"        '-' -> only display minus for negative values\n"
-"        ' ' -> minus for negative values, space for positive values\n\n"
-"     optional width.real_precision.imag_precision\n\n"
-"     optional rounding mode:\n\n"
-"        'U' -> round toward plus infinity\n"
-"        'D' -> round toward minus infinity\n"
-"        'Z' -> round toward zero\n"
-"        'N' -> round to nearest\n\n"
-"     optional output style:\n\n"
-"        'P' -> Python style, 1+2j, (default)\n"
-"        'M' -> MPC style, (1 2)\n\n"
-"     optional conversion code:\n\n"
-"        'a','A' -> hex format\n"
-"        'b'     -> binary format\n"
-"        'e','E' -> scientific format\n"
-"        'f','F' -> fixed point format\n"
-"        'g','G' -> fixed or scientific format\n\n"
-"The default format is 'f'.");
+"Return a Python string by formatting 'x' using the format string 'fmt'.\n\n"
+"All of `mpfr`'s format types and options are supported, with the exception\n"
+"of '%' format type, '=' alignment and zero padding.");
 
 static PyObject *
 GMPy_MPC_Format(PyObject *self, PyObject *args)
