@@ -158,8 +158,15 @@ GMPy_MPZ_Format(PyObject *self, PyObject *args)
             base = -16;
             break;
         }
-        VALUE_ERROR("Invalid conversion specification");
-        return NULL;
+
+        MPFR_Object *tmp = NULL;
+
+        if (!(tmp = GMPy_MPFR_From_MPZ((MPZ_Object *)self, 0, NULL))) {
+            return NULL; /* LCOV_EXCL_LINE */
+        }
+        result = GMPy_MPFR_Format((PyObject *)tmp, args);
+        Py_DECREF(tmp);
+        return result;
     }
     *(p2++) = '\00';
 
