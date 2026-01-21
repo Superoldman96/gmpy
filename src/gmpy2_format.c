@@ -228,7 +228,7 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
     char mpfrfmt[100], fmt[30];
     int buflen;
     int seensign = 0, seenalign = 0, seendecimal = 0, seendigits = 0;
-    int seenround = 0, seenconv = 0;
+    int seenround = 0, seenconv = 0, seenindicator = 0;
     CTXT_Object *context = NULL;
     mpfr_rnd_t ctx_round;
 
@@ -249,7 +249,7 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
 
     for (p1 = (unsigned char*)fmtcode; *p1 != '\00'; p1++) {
         if (*p1 == '<' || *p1 == '>' || *p1 == '^') {
-            if (seenalign || seensign || seendecimal || seendigits || seenround) {
+            if (seenalign || seensign || seendecimal || seendigits || seenround || seenindicator) {
                 VALUE_ERROR("Invalid conversion specification");
                 return NULL;
             }
@@ -260,7 +260,7 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
             }
         }
         if (*p1 == '+' || *p1 == ' ') {
-            if (seensign || seendecimal || seendigits || seenround) {
+            if (seensign || seendecimal || seendigits || seenround || seenindicator) {
                 VALUE_ERROR("Invalid conversion specification");
                 return NULL;
             }
@@ -271,12 +271,23 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
             }
         }
         if (*p1 == '-') {
-            if (seensign || seendecimal || seendigits || seenround) {
+            if (seensign || seendecimal || seendigits || seenround || seenindicator) {
                 VALUE_ERROR("Invalid conversion specification");
                 return NULL;
             }
             else {
                 seensign = 1;
+                continue;
+            }
+        }
+        if (*p1 == '#') {
+            if (seenindicator || seendigits) {
+                VALUE_ERROR("Invalid conversion specification");
+                return NULL;
+            }
+            else {
+                *(p2++) = *p1;
+                seenindicator = 1;
                 continue;
             }
         }
@@ -461,6 +472,7 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
     int rbuflen, ibuflen;
     int seensign = 0, seenalign = 0, seendecimal = 0, seendigits = 0;
     int seenround = 0, seenconv = 0, seenstyle = 0, mpcstyle = 0;
+    int seenindicator = 0;
     CTXT_Object *context = NULL;
     mpfr_rnd_t ctx_round;
 
@@ -485,7 +497,8 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
     for (p = (unsigned char*)fmtcode; *p != '\00'; p++) {
         if (*p == '<' || *p == '>' || *p == '^') {
             if (seenalign || seensign || seendecimal || seendigits ||
-                seenround || seenstyle) {
+                seenround || seenstyle || seenindicator)
+            {
                 VALUE_ERROR("Invalid conversion specification");
                 return NULL;
             }
@@ -497,7 +510,8 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
         }
         if (*p == '+' || *p == ' ' || *p == '-') {
             if (seensign || seendecimal || seendigits || seenround ||
-                seenstyle) {
+                seenstyle || seenindicator)
+            {
                 VALUE_ERROR("Invalid conversion specification");
                 return NULL;
             }
@@ -512,6 +526,18 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
             *(rfmtptr++) = '-';
             *(ifmtptr++) = '-';
             seensign = 1;
+        }
+        if (*p == '#') {
+            if (seenindicator || seendigits) {
+                VALUE_ERROR("Invalid conversion specification");
+                return NULL;
+            }
+            else {
+                *(rfmtptr++) = *p;
+                *(ifmtptr++) = *p;
+                seenindicator = 1;
+                continue;
+            }
         }
         if (*p == '.') {
             if (seendecimal == 2 || seendigits || seenround || seenstyle) {
