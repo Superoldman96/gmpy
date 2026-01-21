@@ -341,6 +341,8 @@ def test_mpfr_format():
 
     assert "{:.0f}".format(mpfr('123')) == '123.0'
 
+    assert "{:.2%}".format(mpfr('0.123')) == '12.30%'
+
     pytest.raises(ValueError, lambda: '{:Z.}'.format(r))
     pytest.raises(ValueError, lambda: '{:->}'.format(r))
     pytest.raises(ValueError, lambda: '{:YZ}'.format(r))

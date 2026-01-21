@@ -320,7 +320,7 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
         }
         if (*p1 == 'a' || *p1 == 'A' || *p1 == 'b' || *p1 == 'e' ||
             *p1 == 'E' || *p1 == 'f' || *p1 == 'F' || *p1 == 'g' ||
-            *p1 == 'G' ) {
+            *p1 == 'G' || *p1 == '%' ) {
             if (!seenround) {
                 switch (ctx_round) {
                     case MPFR_RNDD:
@@ -354,10 +354,27 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
     if (!seenconv)
         *(p2++) = 'f';
 
+    if (seenconv && *(p2 - 1) == '%') {
+        *(p2 - 1) = 'f';
+        *p2 = '%';
+        *(p2++) = '%';
+    }
+
     *(p2) = '\00';
     *(p3) = '\00';
 
-    WA_UNAN_ASPRINTF(buflen, buffer, mpfrfmt, MPFR(self));
+    if (seenconv && *(p2 - 1) == '%') {
+        mpfr_t tmp;
+
+        mpfr_init2(tmp, mpfr_get_prec(MPFR(self)));
+        mpfr_set(tmp, MPFR(self), ctx_round);
+        mpfr_mul_ui(tmp, tmp, 100, ctx_round);
+        WA_UNAN_ASPRINTF(buflen, buffer, mpfrfmt, tmp);
+        mpfr_clear(tmp);
+    }
+    else {
+        WA_UNAN_ASPRINTF(buflen, buffer, mpfrfmt, MPFR(self));
+    }
 
     if (buflen == -1) {
         RUNTIME_ERROR("The maximum precision for string formatting "
