@@ -216,6 +216,8 @@ def test_mpc_format():
     assert '{:e}'.format(c) == '3.333333e-01+5.000000e+00j'
     assert '{:M}'.format(c1) == '(-1.000000 -2.000000)'
 
+    assert "{:#g}".format(mpc(1)) == '1.00000+0.00000j'
+
     # issue 666
     r = mpc('1.5707963267948966')
     assert f'{r:e}' == '1.570796e+00+0.000000e+00j'
