@@ -299,7 +299,10 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
         }
         if (!seendigits) {
             seendigits = 1;
-            if (!seenconv && (*p1 == 'e' || *p1 == 'E')) {
+            if ((*p1 == 'e' || *p1 == 'E')
+                || ((*p1 == 'U' || *p1 == 'D' || *p1 == 'Y' || *p1 == 'Z' ||
+                     *p1 == 'N') && (*(p1+1) == 'e' || *(p1+1) == 'E')))
+            {
                 *(p2++) = '.';
                 *(p2++) = '6';
             }
@@ -536,7 +539,10 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
         }
         if (!seendigits) {
             seendigits = 1;
-            if (!seenconv && (*p == 'e' || *p == 'E')) {
+            if ((*p == 'e' || *p == 'E')
+                || ((*p == 'U' || *p == 'D' || *p == 'Y' || *p == 'Z' ||
+                     *p == 'N') && (*(p+1) == 'e' || *(p+1) == 'E')))
+            {
                 *(rfmtptr++) = '.';
                 *(rfmtptr++) = '6';
                 *(ifmtptr++) = '.';
