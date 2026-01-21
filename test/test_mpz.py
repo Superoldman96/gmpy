@@ -642,6 +642,13 @@ def test_mpz_format():
 
     assert '{:^#16o}'.format(a) == '     0o173      '
 
+    # floating-point formats
+    assert '{:f}'.format(a) == '123.000000'
+    assert '{:g}'.format(a) == '123.0'
+
+    gmpy2.set_context(gmpy2.ieee(64))
+    assert '{:f}'.format(a<<1024) == 'inf'
+
 
 def test_mpz_digits():
     z1, z2 = mpz(-3), mpz(15)
