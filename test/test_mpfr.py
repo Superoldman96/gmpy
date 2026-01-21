@@ -347,6 +347,10 @@ def test_mpfr_format():
     pytest.raises(ValueError, lambda: '{:->}'.format(r))
     pytest.raises(ValueError, lambda: '{:YZ}'.format(r))
 
+    # issue 666
+    r = mpfr('1.5707963267948966')
+    assert f'{r:e}' == '1.570796e+00'
+
     # issue 503
     r = mpfr(2.675)
     assert f'{r:.2f}' == '2.67'
