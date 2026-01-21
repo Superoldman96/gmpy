@@ -858,17 +858,11 @@ GMPy_MPFR_ConvertArg(PyObject *arg, PyObject **ptr)
 static PyObject *
 GMPy_MPFR_Str_Slot(MPFR_Object *self)
 {
-    PyObject *result, *temp;
-    long precision;
-    char fmtstr[60];
+    PyObject *result, *temp = PyUnicode_FromString("{0:}");
 
-    precision = (long)(log10(2) * (double)mpfr_get_prec(MPFR(self))) + 2;
-
-    sprintf(fmtstr, "{0:.%ldg}", precision);
-
-    temp = PyUnicode_FromString(fmtstr);
-    if (!temp)
+    if (!temp) {
         return NULL;
+    }
     result = PyObject_CallMethod(temp, "format", "O", self);
     Py_DECREF(temp);
     return result;
@@ -878,20 +872,19 @@ static PyObject *
 GMPy_MPFR_Repr_Slot(MPFR_Object *self)
 {
     PyObject *result, *temp;
-    long precision, bits;
+    long bits = mpfr_get_prec(MPFR(self));
     char fmtstr[60];
 
-    bits = mpfr_get_prec(MPFR(self));
-    precision = (long)(log10(2) * (double)bits) + 2;
-
-    if (mpfr_number_p(MPFR(self)) && bits != DBL_MANT_DIG)
-        sprintf(fmtstr, "mpfr('{0:.%ldg}',%ld)", precision, bits);
-    else
-        sprintf(fmtstr, "mpfr('{0:.%ldg}')", precision);
-
+    if (mpfr_number_p(MPFR(self)) && bits != DBL_MANT_DIG) {
+        sprintf(fmtstr, "mpfr('{0:}',%ld)", bits);
+    }
+    else {
+        sprintf(fmtstr, "mpfr('{0:}')");
+    }
     temp = PyUnicode_FromString(fmtstr);
-    if (!temp)
+    if (!temp) {
         return NULL;
+    }
     result = PyObject_CallMethod(temp, "format", "O", self);
     Py_DECREF(temp);
     return result;

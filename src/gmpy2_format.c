@@ -306,6 +306,18 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
                 *(p2++) = '.';
                 *(p2++) = '6';
             }
+            if ((*p1 == 'U' || *p1 == 'D' || *p1 == 'Y' || *p1 == 'Z' ||
+                 *p1 == 'N') && *(p1+1) == '\00')
+            {
+                long precision = (long)(log10(2) * (double)mpfr_get_prec(MPFR(self))) + 2;
+                char tmp[23];
+
+                *(p2++) = '.';
+                sprintf(tmp, "%ld", precision);
+                for (char *c = tmp; *c != '\00'; c++) {
+                    *(p2++) = *c;
+                }
+            }
             *(p2++) = 'R';
         }
         if (*p1 == 'U' || *p1 == 'D' || *p1 == 'Y' || *p1 == 'Z' ||
@@ -351,10 +363,20 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    if (!seendigits)
+    if (!seendigits) {
+        long precision = (long)(log10(2) * (double)mpfr_get_prec(MPFR(self))) + 2;
+        char tmp[23];
+
+        *(p2++) = '.';
+        sprintf(tmp, "%ld", precision);
+        for (char *c = tmp; *c != '\00'; c++) {
+            *(p2++) = *c;
+        }
         *(p2++) = 'R';
-    if (!seenconv)
-        *(p2++) = 'f';
+    }
+    if (!seenconv) {
+        *(p2++) = 'g';
+    }
 
     if (seenconv && *(p2 - 1) == '%') {
         *(p2 - 1) = 'f';
@@ -548,6 +570,24 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
                 *(ifmtptr++) = '.';
                 *(ifmtptr++) = '6';
             }
+            if ((*p == 'U' || *p == 'D' || *p == 'Y' || *p == 'Z' ||
+                 *p == 'N') && *(p+1) == '\00')
+            {
+                long precision = (long)(log10(2) * (double)mpfr_get_prec(mpc_realref(MPC(self)))) + 2;
+                char tmp[23];
+
+                *(rfmtptr++) = '.';
+                sprintf(tmp, "%ld", precision);
+                for (char *c = tmp; *c != '\00'; c++) {
+                    *(rfmtptr++) = *c;
+                }
+                precision = (long)(log10(2) * (double)mpfr_get_prec(mpc_imagref(MPC(self)))) + 2;
+                *(ifmtptr++) = '.';
+                sprintf(tmp, "%ld", precision);
+                for (char *c = tmp; *c != '\00'; c++) {
+                    *(ifmtptr++) = *c;
+                }
+            }
             *(rfmtptr++) = 'R';
             *(ifmtptr++) = 'R';
         }
@@ -619,12 +659,26 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
         *(ifmtptr++) = '-';
     }
     if (!seendigits) {
+        long precision = (long)(log10(2) * (double)mpfr_get_prec(mpc_realref(MPC(self)))) + 2;
+        char tmp[23];
+
+        *(rfmtptr++) = '.';
+        sprintf(tmp, "%ld", precision);
+        for (char *c = tmp; *c != '\00'; c++) {
+            *(rfmtptr++) = *c;
+        }
         *(rfmtptr++) = 'R';
+        precision = (long)(log10(2) * (double)mpfr_get_prec(mpc_imagref(MPC(self)))) + 2;
+        *(ifmtptr++) = '.';
+        sprintf(tmp, "%ld", precision);
+        for (char *c = tmp; *c != '\00'; c++) {
+            *(ifmtptr++) = *c;
+        }
         *(ifmtptr++) = 'R';
     }
     if (!seenconv) {
-        *(rfmtptr++) = 'f';
-        *(ifmtptr++) = 'f';
+        *(rfmtptr++) = 'g';
+        *(ifmtptr++) = 'g';
     }
 
     *(rfmtptr) = '\00';
