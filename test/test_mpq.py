@@ -201,6 +201,20 @@ def test_mpq_round():
 
     pytest.raises(TypeError, lambda: round(q, 4, 2))
 
+    gmpy2.set_context(gmpy2.ieee(64))
+    ctx = gmpy2.get_context()
+    q = mpq('111111/2222')
+
+    assert round(q, 3) == mpq(10001, 200)
+    ctx.round = gmpy2.RoundUp
+    assert round(q, 3) == mpq(10001, 200)
+    ctx.round = gmpy2.RoundAwayZero
+    assert round(q, 3) == mpq(10001, 200)
+    ctx.round = gmpy2.RoundToZero
+    assert round(q, 3) == mpq(12501, 250)
+    ctx.round = gmpy2.RoundDown
+    assert round(q, 3) == mpq(12501, 250)
+
 
 @settings(max_examples=1000)
 @given(integers(), integers(min_value=1))
