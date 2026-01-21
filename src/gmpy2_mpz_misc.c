@@ -245,7 +245,6 @@ GMPy_MPZ_Method_Round(PyObject *self, PyObject *const *args,
 {
     Py_ssize_t round_digits;
     MPZ_Object *result;
-    mpz_t temp, rem;
 
     if (nargs == 0) {
         Py_INCREF(self);
@@ -271,21 +270,52 @@ GMPy_MPZ_Method_Round(PyObject *self, PyObject *const *args,
             mpz_set_ui(result->z, 0);
         }
         else {
+            mpz_t temp;
+            CTXT_Object *context = NULL;
+            mpfr_rnd_t ctx_round;
+
+            CHECK_CONTEXT(context);
+            ctx_round = GET_MPFR_ROUND(context);
             mpz_init(temp);
-            mpz_init(rem);
             mpz_ui_pow_ui(temp, 10, (unsigned long)round_digits);
-            mpz_fdiv_qr(result->z, rem, MPZ(self), temp);
-            mpz_mul_2exp(rem, rem, 1);
-            if (mpz_cmp(rem, temp) > 0) {
-                mpz_add_ui(result->z, result->z, 1);
-            }
-            else if (mpz_cmp(rem, temp) == 0) {
-                if (mpz_odd_p(result->z)) {
-                    mpz_add_ui(result->z, result->z, 1);
+            if (ctx_round == MPFR_RNDA) {
+                if (mpz_sgn(MPZ(self)) < 0) {
+                    ctx_round = MPFR_RNDD;
+                }
+                else {
+                    ctx_round = MPFR_RNDU;
                 }
             }
+            switch (ctx_round) {
+                case MPFR_RNDZ:
+                    mpz_tdiv_q(result->z, MPZ(self), temp);
+                    break;
+                case MPFR_RNDD:
+                    mpz_fdiv_q(result->z, MPZ(self), temp);
+                    break;
+                case MPFR_RNDU:
+                    mpz_cdiv_q(result->z, MPZ(self), temp);
+                    break;
+                case MPFR_RNDN:
+                default:
+                    {
+                        mpz_t rem;
+
+                        mpz_init(rem);
+                        mpz_fdiv_qr(result->z, rem, MPZ(self), temp);
+                        mpz_mul_2exp(rem, rem, 1);
+                        if (mpz_cmp(rem, temp) > 0) {
+                            mpz_add_ui(result->z, result->z, 1);
+                        }
+                        else if (mpz_cmp(rem, temp) == 0) {
+                            if (mpz_odd_p(result->z)) {
+                                mpz_add_ui(result->z, result->z, 1);
+                            }
+                        }
+                        mpz_clear(rem);
+                    }
+            }
             mpz_mul(result->z, result->z, temp);
-            mpz_clear(rem);
             mpz_clear(temp);
         }
     }
