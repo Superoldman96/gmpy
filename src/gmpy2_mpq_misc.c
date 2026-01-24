@@ -320,7 +320,7 @@ GMPy_MPQ_Method_Round(PyObject *self, PyObject *args)
     Py_ssize_t round_digits = 0;
     MPQ_Object *resultq;
     MPZ_Object *resultz;
-    mpz_t temp, rem;
+    mpz_t temp;
     CTXT_Object *context = NULL;
 
     CHECK_CONTEXT(context);
@@ -332,18 +332,52 @@ GMPy_MPQ_Method_Round(PyObject *self, PyObject *args)
             return NULL;
         }
 
-        mpz_init(rem);
-        mpz_fdiv_qr(resultz->z, rem, mpq_numref(MPQ(self)), mpq_denref(MPQ(self)));
-        mpz_mul_2exp(rem, rem, 1);
-        if (mpz_cmp(rem, mpq_denref(MPQ(self))) > 0) {
-            mpz_add_ui(resultz->z, resultz->z, 1);
-        }
-        else if (mpz_cmp(rem, mpq_denref(MPQ(self))) == 0) {
-            if (mpz_odd_p(resultz->z)) {
-                mpz_add_ui(resultz->z, resultz->z, 1);
+        CTXT_Object *context = NULL;
+        mpfr_rnd_t ctx_round;
+
+        CHECK_CONTEXT(context);
+        ctx_round = GET_MPFR_ROUND(context);
+        if (ctx_round == MPFR_RNDA) {
+            if (mpq_sgn(MPQ(self)) < 0) {
+                ctx_round = MPFR_RNDD;
+            }
+            else {
+                ctx_round = MPFR_RNDU;
             }
         }
-        mpz_clear(rem);
+        switch (ctx_round) {
+            case MPFR_RNDZ:
+                mpz_tdiv_q(resultz->z, mpq_numref(MPQ(self)),
+                           mpq_denref(MPQ(self)));
+                break;
+            case MPFR_RNDD:
+                mpz_fdiv_q(resultz->z, mpq_numref(MPQ(self)),
+                           mpq_denref(MPQ(self)));
+                break;
+            case MPFR_RNDU:
+                mpz_cdiv_q(resultz->z, mpq_numref(MPQ(self)),
+                           mpq_denref(MPQ(self)));
+                break;
+            case MPFR_RNDN:
+            default:
+                {
+                    mpz_t rem;
+
+                    mpz_init(rem);
+                    mpz_fdiv_qr(resultz->z, rem, mpq_numref(MPQ(self)),
+                                mpq_denref(MPQ(self)));
+                    mpz_mul_2exp(rem, rem, 1);
+                    if (mpz_cmp(rem, mpq_denref(MPQ(self))) > 0) {
+                        mpz_add_ui(resultz->z, resultz->z, 1);
+                    }
+                    else if (mpz_cmp(rem, mpq_denref(MPQ(self))) == 0) {
+                        if (mpz_odd_p(resultz->z)) {
+                            mpz_add_ui(resultz->z, resultz->z, 1);
+                        }
+                    }
+                    mpz_clear(rem);
+                }
+            }
         return (PyObject*)resultz;
     }
 

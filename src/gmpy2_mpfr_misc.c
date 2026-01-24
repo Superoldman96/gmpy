@@ -722,8 +722,10 @@ GMPy_MPFR_Method_Round10(PyObject *self, PyObject *args)
     MPFR_Object *resultf = 0;
     MPZ_Object *resultz;
     CTXT_Object *context = NULL;
+    mpfr_rnd_t ctx_round;
 
     CHECK_CONTEXT(context);
+    ctx_round = GET_MPFR_ROUND(context);
 
     /* If the size of args is 0, we just return an mpz. */
 
@@ -740,7 +742,7 @@ GMPy_MPFR_Method_Round10(PyObject *self, PyObject *args)
                 return NULL;
             }
             /* return code is ignored */
-            mpfr_get_z(resultz->z, MPFR(self), MPFR_RNDN);
+            mpfr_get_z(resultz->z, MPFR(self), ctx_round);
         }
         return (PyObject*)resultz;
     }
@@ -767,21 +769,21 @@ GMPy_MPFR_Method_Round10(PyObject *self, PyObject *args)
     mpz_init(temp);
     mpz_ui_pow_ui(temp, 10, digits > 0 ? digits : -digits);
     if (digits >= 0) {
-        mpfr_mul_z(resultf->f, MPFR(self), temp, MPFR_RNDN);
+        mpfr_mul_z(resultf->f, MPFR(self), temp, ctx_round);
     }
     else {
-        mpfr_div_z(resultf->f, MPFR(self), temp, MPFR_RNDN);
+        mpfr_div_z(resultf->f, MPFR(self), temp, ctx_round);
     }
 
-    mpfr_rint(resultf->f, resultf->f, MPFR_RNDN);
+    mpfr_rint(resultf->f, resultf->f, ctx_round);
 
     if (digits >= 0) {
-        mpfr_div_z(resultf->f, resultf->f, temp, MPFR_RNDN);
+        mpfr_div_z(resultf->f, resultf->f, temp, ctx_round);
     }
     else {
-        mpfr_mul_z(resultf->f, resultf->f, temp, MPFR_RNDN);
+        mpfr_mul_z(resultf->f, resultf->f, temp, ctx_round);
     }
-    mpfr_prec_round(resultf->f, mpfr_get_prec(MPFR(self)), MPFR_RNDN);
+    mpfr_prec_round(resultf->f, mpfr_get_prec(MPFR(self)), ctx_round);
 
     mpz_clear(temp);
     return((PyObject*)resultf);

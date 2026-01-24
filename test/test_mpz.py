@@ -512,6 +512,21 @@ def test_mpz_round():
     # issue 552
     assert round(mpz(501), -3) == mpz(1000)
 
+    # issue 567
+    gmpy2.set_context(gmpy2.ieee(64))
+    ctx = gmpy2.get_context()
+    x = mpz(123456)
+
+    assert round(x, -1) == mpz(123460)
+    ctx.round = gmpy2.RoundUp
+    assert round(x, -1) == mpz(123460)
+    ctx.round = gmpy2.RoundAwayZero
+    assert round(x, -1) == mpz(123460)
+    ctx.round = gmpy2.RoundToZero
+    assert round(x, -1) == mpz(123450)
+    ctx.round = gmpy2.RoundDown
+    assert round(x, -1) == mpz(123450)
+
 
 @settings(max_examples=10000)
 @given(integers())

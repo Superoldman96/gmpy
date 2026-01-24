@@ -971,3 +971,20 @@ def test_issue_650():
     assert gmpy2.copy_sign(mpfr(1), x) == -1
     assert str(x) == 'nan'
     assert gmpy2.copy_sign(mpfr(1), x) == -1
+
+
+def test_issue_567():
+    gmpy2.set_context(gmpy2.ieee(64))
+
+    ctx = get_context()
+
+    x = mpfr(2.675)
+    d = mpfr(2.67)
+    u = mpfr(2.68)
+
+    assert ctx.round == gmpy2.RoundToNearest
+    assert round(x, 2) == d
+    ctx.round = gmpy2.RoundDown
+    assert round(x, 2) == d
+    ctx.round = gmpy2.RoundUp
+    assert round(x, 2) == u
