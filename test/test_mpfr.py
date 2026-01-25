@@ -320,19 +320,19 @@ def test_mpfr_mpmath():
 def test_mpfr_format():
     r, r1, r2 = mpfr(5.6), mpfr(-3), mpfr(5)
 
-    assert '{:<30}'.format(r1) == '-3.000000                     '
-    assert '{:>+20}'.format(r2) == '           +5.000000'
-    assert '{:>-15}'.format(r2) == '       5.000000'
-    assert '{:>-15}'.format(r1) == '      -3.000000'
-    assert '{:U}'.format(r) == '5.600000'
+    assert '{:<30}'.format(r1) == '-3.0                          '
+    assert '{:>+20}'.format(r2) == '                +5.0'
+    assert '{:>-15}'.format(r2) == '            5.0'
+    assert '{:>-15}'.format(r1) == '           -3.0'
+    assert '{:U}'.format(r) == '5.5999999999999997'
 
     pytest.raises(ValueError, lambda: '{:U-}'.format(r))
 
-    assert '{:Z}'.format(r) == '5.599999'
+    assert '{:Z}'.format(r) == '5.5999999999999996'
 
     pytest.raises(ValueError, lambda: '{:Z+}'.format(r))
 
-    assert '{:+Z}'.format(r) == '+5.599999'
+    assert '{:+Z}'.format(r) == '+5.5999999999999996'
 
     pytest.raises(ValueError, lambda: '{:Z }'.format(r))
 

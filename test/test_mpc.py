@@ -185,13 +185,13 @@ def test_mpc_format():
 
     c, c1 = mpc(mpq(1/3), 5), mpc(-1, -2)
 
-    assert '{:>20}'.format(c) == '  0.333333+5.000000j'
-    assert '{:<20}'.format(c) == '0.333333+5.000000j  '
-    assert '{:^20}'.format(c) == ' 0.333333+5.000000j '
+    assert '{:>30}'.format(c) == '      0.33333333333333331+5.0j'
+    assert '{:<30}'.format(c) == '0.33333333333333331+5.0j      '
+    assert '{:^30}'.format(c) == '   0.33333333333333331+5.0j   '
 
     pytest.raises(ValueError, lambda: '{:<<20}'.format(c))
 
-    assert '{:>+20}'.format(c) == ' +0.333333+5.000000j'
+    assert '{:>+30}'.format(c) == '     +0.33333333333333331+5.0j'
 
     pytest.raises(ValueError, lambda: '{:+^20}'.format(c))
 
@@ -200,21 +200,21 @@ def test_mpc_format():
     pytest.raises(ValueError, lambda: '{:Z.10f}'.format(c))
     pytest.raises(ValueError, lambda: '{:Z 10}'.format(c))
 
-    assert '{:Z}'.format(c) == '0.333333+5.000000j'
-    assert '{:U}'.format(c) == '0.333334+5.000000j'
+    assert '{:Z}'.format(c) == '0.33333333333333331+5.0j'
+    assert '{:U}'.format(c) == '0.33333333333333332+5.0j'
 
     pytest.raises(ValueError, lambda: '{:PU}'.format(c))
 
-    assert '{:UP}'.format(c) == '0.333334+5.000000j'
+    assert '{:UP}'.format(c) == '0.333334+5.0j'
 
     pytest.raises(ValueError, lambda: '{:PP}'.format(c))
 
     assert '{:G}'.format(c) == '0.333333+5.0j'
-    assert '{:M}'.format(c) == '(0.333333 5.000000)'
+    assert '{:M}'.format(c) == '(0.333333 5.0)'
     assert '{:b}'.format(c) == '1.0101010101010101010101010101010101010101010101010101p-2+1.01p+2j'
     assert '{:a}'.format(c) == '0x5.5555555555554p-4+0x5p+0j'
     assert '{:e}'.format(c) == '3.333333e-01+5.000000e+00j'
-    assert '{:M}'.format(c1) == '(-1.000000 -2.000000)'
+    assert '{:M}'.format(c1) == '(-1.0 -2.0)'
 
     assert "{:#g}".format(mpc(1)) == '1.00000+0.00000j'
 
