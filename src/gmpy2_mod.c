@@ -317,7 +317,7 @@ GMPy_Number_Mod_Slot(PyObject *x, PyObject *y)
 }
 
 PyDoc_STRVAR(GMPy_doc_mod,
-"mod(x, y, /) -> mpz|mpq|mpfr\n\n"
+"mod($module, x, y, /)\n--\n\n"
 "Return mod(x, y).\n"
 "Note: overflow, underflow, and inexact exceptions are not supported for\n"
 "mpfr arguments to mod().");
@@ -345,7 +345,7 @@ GMPy_Number_Mod(PyObject *x, PyObject *y, CTXT_Object *context)
 }
 
 PyDoc_STRVAR(GMPy_doc_context_mod,
-"context.mod(x, y, /) -> mpz|mpq|mpfr\n\n"
+"mod($self, x, y, /)\n--\n\n"
 "Return mod(x, y).\n"
 "Note: overflow, underflow, and inexact exceptions are not supported for\n"
 "`mpfr` arguments.");

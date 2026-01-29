@@ -358,7 +358,7 @@ GMPy_Number_TrueDiv_Slot(PyObject *x, PyObject *y)
 }
 
 PyDoc_STRVAR(GMPy_doc_truediv,
-"div(x, y, /) -> mpz | mpq | mpfr | mpc\n\n"
+"div($module, x, y, /)\n--\n\n"
 "Return x / y; uses true division.");
 
 static PyObject *
@@ -384,7 +384,7 @@ GMPy_Number_TrueDiv(PyObject *x, PyObject *y, CTXT_Object *context)
 }
 
 PyDoc_STRVAR(GMPy_doc_context_truediv,
-"context.div(x, y, /) -> mpz | mpq | mpfr | mpc\n\n"
+"div($self, x, y, /)\n--\n\n"
 "Return x / y; uses true division.");
 
 static PyObject *
