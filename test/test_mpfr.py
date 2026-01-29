@@ -1,3 +1,4 @@
+import inspect
 import math
 import pickle
 import sys
@@ -988,3 +989,12 @@ def test_issue_567():
     assert round(x, 2) == d
     ctx.round = gmpy2.RoundUp
     assert round(x, 2) == u
+
+
+@pytest.mark.skipif(sys.version_info < (3, 13), reason="requires v3.13+")
+def test_mpfr_signatures():
+    cls = gmpy2.mpfr
+    for f in dir(cls):
+        a = getattr(cls, f)
+        if callable(a) and f != '__class__':
+            _ = inspect.signature(a)  # not raises

@@ -1,6 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 from fractions import Fraction
 import cmath
+import inspect
 import sys
 
 import pytest
@@ -583,3 +584,12 @@ def test_mpc_mixed_arithmetics():
                                                                         z.imag])
                     assert cmath.isclose(r1, complex(g1))
                 assert str(r2) == str(complex(g2))
+
+
+@pytest.mark.skipif(sys.version_info < (3, 13), reason="requires v3.13+")
+def test_mpc_signatures():
+    cls = gmpy2.mpc
+    for f in dir(cls):
+        a = getattr(cls, f)
+        if callable(a) and f != '__class__':
+            _ = inspect.signature(a)  # not raises

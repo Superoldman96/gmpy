@@ -1,3 +1,4 @@
+import inspect
 import math
 import numbers
 import pickle
@@ -720,3 +721,12 @@ def test_mpq_limit_denominator():
     assert mpq(201, 200).limit_denominator(100) == mpq(1)
     assert mpq(201, 200).limit_denominator(101) == mpq(102, 101)
     assert mpq(0).limit_denominator(10000) == mpq(0)
+
+
+@pytest.mark.skipif(sys.version_info < (3, 13), reason="requires v3.13+")
+def test_mpq_signatures():
+    cls = gmpy2.mpq
+    for f in dir(cls):
+        a = getattr(cls, f)
+        if callable(a) and f != '__class__':
+            _ = inspect.signature(a)  # not raises
