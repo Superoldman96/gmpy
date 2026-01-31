@@ -581,7 +581,7 @@ GMPy_MPQ_Method_Limit_Denominator(PyObject *self, PyObject *const *args,
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_sizeof,
 "__sizeof__($self)\n--\n\n"
-"Returns the amount of memory consumed by x. Note: deleted mpq objects\n"
+"Returns the amount of memory consumed by self. Note: deleted mpq objects\n"
 "are reused and may or may not be resized when a new value is assigned.");
 
 static PyObject *
@@ -594,7 +594,7 @@ GMPy_MPQ_Method_Sizeof(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_is_integer,
 "is_integer($self)\n--\n\n"
-"Return `True` if x is an integer.");
+"Return `True` if self is an integer.");
 
 static PyObject *
 GMPy_MPQ_Method_IsInteger(PyObject *self, PyObject *other)

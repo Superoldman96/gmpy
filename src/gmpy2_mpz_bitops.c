@@ -27,7 +27,7 @@
 PyDoc_STRVAR(doc_bit_length_method,
 "bit_length($self)\n--\n\n"
 "Return the number of significant bits in the radix-2\n"
-"representation of x. Note: mpz(0).bit_length() returns 0.");
+"representation of self. Note: mpz(0).bit_length() returns 0.");
 
 static PyObject *
 GMPy_MPZ_bit_length_method(PyObject *self, PyObject *other)
@@ -90,9 +90,9 @@ GMPy_MPZ_bit_mask(PyObject *self, PyObject *other)
 /* return scan0/scan1 for an mpz */
 PyDoc_STRVAR(doc_bit_scan0_method,
 "bit_scan0($self, n=0, /)\n--\n\n"
-"Return the index of the first 0-bit of x with index >= n. n >= 0.\n"
-"If there are no more 0-bits in x at or above index n (which can\n"
-"only happen for x<0, assuming an infinitely long 2's complement\n"
+"Return the index of the first 0-bit of self with index >= n. n >= 0.\n"
+"If there are no more 0-bits in self at or above index n (which can\n"
+"only happen for negatives, assuming an infinitely long 2's complement\n"
 "format), then `None` is returned.");
 
 static PyObject *
@@ -122,7 +122,7 @@ PyDoc_STRVAR(doc_bit_scan0_function,
 "bit_scan0($module, x, n=0, /)\n--\n\n"
 "Return the index of the first 0-bit of x with index >= n. n >= 0.\n"
 "If there are no more 0-bits in x at or above index n (which can\n"
-"only happen for x<0, assuming an infinitely long 2's complement\n"
+"only happen for negatives, assuming an infinitely long 2's complement\n"
 "format), then `None` is returned.");
 
 static PyObject *
@@ -166,9 +166,9 @@ GMPy_MPZ_bit_scan0_function(PyObject *self, PyObject *const *args,
 
 PyDoc_STRVAR(doc_bit_scan1_method,
 "bit_scan1($self, n=0, /)\n--\n\n"
-"Return the index of the first 1-bit of x with index >= n. n >= 0.\n"
-"If there are no more 1-bits in x at or above index n (which can\n"
-"only happen for x>=0, assuming an infinitely long 2's complement\n"
+"Return the index of the first 1-bit of self with index >= n. n >= 0.\n"
+"If there are no more 1-bits in self at or above index n (which can\n"
+"only happen for non-negatives, assuming an infinitely long 2's complement\n"
 "format), then `None` is returned.");
 
 static PyObject *
@@ -283,7 +283,7 @@ GMPy_MPZ_bit_test_function(PyObject *self, PyObject *const *args,
 
 PyDoc_STRVAR(doc_bit_test_method,
 "bit_test(n, /)\n--\n\n"
-"Return the value of the n-th bit of x.");
+"Return the value of the n-th bit of self.");
 
 static PyObject *
 GMPy_MPZ_bit_test_method(PyObject *self, PyObject *other)
@@ -340,7 +340,7 @@ GMPy_MPZ_bit_clear_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_bit_clear_method,
 "bit_clear($self, n, /)\n--\n\n"
-"Return a copy of x with the n-th bit cleared.");
+"Return a copy of self with the n-th bit cleared.");
 
 static PyObject *
 GMPy_MPZ_bit_clear_method(PyObject *self, PyObject *other)
@@ -401,7 +401,7 @@ GMPy_MPZ_bit_set_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_bit_set_method,
 "bit_set($self, n, /)\n--\n\n"
-"Return a copy of x with the n-th bit set.");
+"Return a copy of self with the n-th bit set.");
 
 static PyObject *
 GMPy_MPZ_bit_set_method(PyObject *self, PyObject *other)
@@ -462,7 +462,7 @@ GMPy_MPZ_bit_flip_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_bit_flip_method,
 "bit_flip($self, n, /)\n--\n\n"
-"Return a copy of x with the n-th bit inverted.");
+"Return a copy of self with the n-th bit inverted.");
 
 static PyObject *
 GMPy_MPZ_bit_flip_method(PyObject *self, PyObject *other)
@@ -699,7 +699,7 @@ GMPy_MPZ_popcount(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(doc_bit_count_method,
 "bit_count($self)\n--\n\n"
-"Return the number of 1-bits set in abs(x).");
+"Return the number of 1-bits set in abs(self).");
 
 static PyObject *
 GMPy_MPZ_bit_count_method(PyObject *self, PyObject *other)

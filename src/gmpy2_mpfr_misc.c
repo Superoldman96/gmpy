@@ -536,9 +536,9 @@ GMPy_MPFR_Mantissa_Exp_Method(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(GMPy_doc_method_simple_fraction,
 "as_simple_fraction($self, precision=0)\n--\n\n"
-"Return a simple rational approximation to x. The result will be\n"
+"Return a simple rational approximation to self. The result will be\n"
 "accurate to 'precision' bits. If 'precision' is 0, the precision\n"
-"of 'x' will be used.");
+"of 'self' will be used.");
 
 static PyObject *
 GMPy_MPFR_Simple_Fraction_Method(PyObject *self, PyObject *args, PyObject *keywds)
@@ -699,7 +699,7 @@ GMPy_Context_CheckRange(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mpfr_sizeof_method,
 "__sizeof__($self)\n--\n\n"
-"Returns the amount of memory consumed by x.");
+"Returns the amount of memory consumed by self.");
 
 static PyObject *
 GMPy_MPFR_SizeOf_Method(PyObject *self, PyObject *other)
@@ -711,7 +711,7 @@ GMPy_MPFR_SizeOf_Method(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_method_round10,
 "__round__($self, n = 0, /)\n--\n\n"
-"Return x rounded to n decimal digits before (n < 0) or after (n > 0)\n"
+"Return self rounded to n decimal digits before (n < 0) or after (n > 0)\n"
 "the decimal point. Rounds to an integer if n is not specified.");
 
 static PyObject *

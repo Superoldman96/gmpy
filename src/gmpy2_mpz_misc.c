@@ -27,7 +27,7 @@
 /* return number-of-digits for an mpz in requested base, default 10 */
 PyDoc_STRVAR(GMPy_doc_mpz_method_num_digits,
 "num_digits($self, base=10, /)\n--\n\n"
-"Return length of string representing the absolute value of x in\n"
+"Return length of string representing the absolute value of self in\n"
 "the given base. Values  for base can range between 2 and 62. The\n"
 "value returned may be 1 too large.");
 
@@ -1137,7 +1137,7 @@ GMPy_MPZ_Method_IsInteger(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_square,
 "is_square($self)\n--\n\n"
-"Returns `True` if x is a perfect square, else return `False`.");
+"Returns `True` if self is a perfect square, else return `False`.");
 
 static PyObject *
 GMPy_MPZ_Method_IsSquare(PyObject *self, PyObject *other)
@@ -1202,7 +1202,7 @@ GMPy_MPZ_Function_IsDivisible(PyObject *self, PyObject * const * args,
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_divisible,
 "is_divisible($self, d, /)\n--\n\n"
-"Returns `True` if x is divisible by d, else return `False`.");
+"Returns `True` if self is divisible by d, else return `False`.");
 
 static PyObject *
 GMPy_MPZ_Method_IsDivisible(PyObject *self, PyObject *other)
@@ -1274,7 +1274,7 @@ GMPy_MPZ_Function_IsCongruent(PyObject *self, PyObject * const *args,
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_congruent,
 "is_congruent($self, y, m, /)\n--\n\n"
-"Returns `True` if x is congruent to y modulo m, else return `False`.");
+"Returns `True` if self is congruent to y modulo m, else return `False`.");
 
 static PyObject *
 GMPy_MPZ_Method_IsCongruent(PyObject *self, PyObject *const *args,
@@ -1339,8 +1339,8 @@ GMPy_MPZ_Function_IsPower(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_power,
 "is_power($self)\n--\n\n"
-"Return `True` if x is a perfect power (there exists a y and an\n"
-"n > 1, such that x=y**n), else return `False`.");
+"Return `True` if self is a perfect power (there exists a y and an\n"
+"n > 1, such that self=y**n), else return `False`.");
 
 static PyObject *
 GMPy_MPZ_Method_IsPower(PyObject *self, PyObject *other)
@@ -1405,8 +1405,8 @@ GMPy_MPZ_Function_IsPrime(PyObject *self, PyObject * const *args,
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_prime,
 "is_prime($self, n=25, /)\n--\n\n"
-"Return `True` if x is *probably* prime, else `False` if x is\n"
-"definitely composite. x is checked for small divisors and up\n"
+"Return `True` if self is *probably* prime, else `False` if self is\n"
+"definitely composite. self is checked for small divisors and up\n"
 "to n Miller-Rabin tests are performed.");
 
 static PyObject *
@@ -1488,8 +1488,8 @@ GMPy_MPZ_Function_IsProbabPrime(PyObject *module, PyObject *const *args,
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_probab_prime,
 "is_probab_prime($self, n=25, /)\n--\n\n"
-"Return 2 if x is definitely prime, 1 if x is probably prime,\n"
-"or return 0 if x is definitely non-prime.  x is checked for small\n"
+"Return 2 if self is definitely prime, 1 if self is probably prime,\n"
+"or return 0 if self is definitely non-prime.  self is checked for small\n"
 "divisors and up to n Miller-Rabin tests are performed.  Reasonable\n"
 "values of n are between 15 and 50.");
 
@@ -1727,7 +1727,7 @@ GMPy_MPZ_Function_IsEven(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_even,
 "is_even($self)\n--\n\n"
-"Return `True` if x is even, `False` otherwise.");
+"Return `True` if self is even, `False` otherwise.");
 
 static PyObject *
 GMPy_MPZ_Method_IsEven(PyObject *self, PyObject *other)
@@ -1774,7 +1774,7 @@ GMPy_MPZ_Function_IsOdd(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_is_odd,
 "is_odd($self)\n--\n\n"
-"Return `True` if x is odd, `False` otherwise.");
+"Return `True` if self is odd, `False` otherwise.");
 
 static PyObject *
 GMPy_MPZ_Method_IsOdd(PyObject *self, PyObject *other)
@@ -2187,7 +2187,7 @@ GMPy_MPZ_Attrib_GetImag(MPZ_Object *self, void *closure)
 
 PyDoc_STRVAR(GMPy_doc_mpz_method_sizeof,
 "__sizeof__($self)\n--\n\n"
-"Returns the amount of memory consumed by x. Note: deleted mpz objects\n"
+"Returns the amount of memory consumed by self. Note: deleted mpz objects\n"
 "are reused and may or may not be resized when a new value is assigned.");
 
 static PyObject *
@@ -2204,7 +2204,7 @@ GMPy_MPZ_Method_SizeOf(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mp_method_conjugate,
 "conjugate($self)\n--\n\n"
-"Return the conjugate of x (which is just a new reference to x since x is\n"
+"Return the conjugate of self (which is just a new reference to self since self is\n"
 "not a complex number).");
 
 static PyObject *

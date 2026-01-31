@@ -24,7 +24,7 @@
 
 PyDoc_STRVAR(GMPy_doc_xmpz_method_num_limbs,
 "num_limbs($self)\n--\n\n"
-"Return the number of limbs of x.");
+"Return the number of limbs of self.");
 static PyObject* GMPy_XMPZ_Method_NumLimbs(PyObject* obj, PyObject* other)
 {
     return PyLong_FromSize_t(mpz_size(XMPZ(obj)));
@@ -33,7 +33,7 @@ static PyObject* GMPy_XMPZ_Method_NumLimbs(PyObject* obj, PyObject* other)
 PyDoc_STRVAR(GMPy_doc_xmpz_method_limbs_read,
 "limbs_read($self)\n--\n\n"
 "Returns the address of the immutable buffer representing the\n"
-"limbs of x.");
+"limbs of self.");
 static PyObject* GMPy_XMPZ_Method_LimbsRead(PyObject* obj, PyObject* args)
 {
     const mp_limb_t* limbs = mpz_limbs_read(XMPZ(obj));
@@ -43,11 +43,11 @@ static PyObject* GMPy_XMPZ_Method_LimbsRead(PyObject* obj, PyObject* args)
 PyDoc_STRVAR(GMPy_doc_xmpz_method_limbs_write,
 "limbs_write($self, n, /)\n--\n\n"
 "Returns the address of a mutable buffer representing the limbs\n"
-"of x, resized so that it may hold at least n limbs.\n"
-"Must be followed by a call to x.limbs_finish(n) after writing to\n"
+"of self, resized so that it may hold at least n limbs.\n"
+"Must be followed by a call to self.limbs_finish(n) after writing to\n"
 "the returned address in order for the changes to take effect.\n"
 "WARNING: this operation is destructive and may destroy the old\n"
-"value of x.");
+"value of self.");
 static PyObject* GMPy_XMPZ_Method_LimbsWrite(PyObject* obj, PyObject* other)
 {
 
@@ -65,8 +65,8 @@ static PyObject* GMPy_XMPZ_Method_LimbsWrite(PyObject* obj, PyObject* other)
 PyDoc_STRVAR(GMPy_doc_xmpz_method_limbs_modify,
 "limbs_modify($self, n, /)\n--\n\n"
 "Returns the address of a mutable buffer representing the limbs\n"
-"of x, resized so that it may hold at least n limbs.\n"
-"Must be followed by a call to x.limbs_finish(n) after writing to\n"
+"of self, resized so that it may hold at least n limbs.\n"
+"Must be followed by a call to self.limbs_finish(n) after writing to\n"
 "the returned address in order for the changes to take effect.");
 static PyObject* GMPy_XMPZ_Method_LimbsModify(PyObject* obj, PyObject* other)
 {
@@ -84,8 +84,8 @@ static PyObject* GMPy_XMPZ_Method_LimbsModify(PyObject* obj, PyObject* other)
 PyDoc_STRVAR(GMPy_doc_xmpz_method_limbs_finish,
 "limbs_finish($self, n, /)\n--\n\n"
 "Must be called after writing to the address returned by\n"
-"x.limbs_write(n) or x.limbs_modify(n) to update\n"
-"the limbs of x.");
+"self.limbs_write(n) or self.limbs_modify(n) to update\n"
+"the limbs of self.");
 static PyObject* GMPy_XMPZ_Method_LimbsFinish(PyObject* obj, PyObject* other)
 {
     if (!PyLong_Check(other)) {

@@ -379,7 +379,7 @@ GMPy_Context_Proj(PyObject *self, PyObject *other)
 
 PyDoc_STRVAR(GMPy_doc_mpc_conjugate_method,
 "conjugate($self)\n--\n\n"
-"Returns the conjugate of x.");
+"Returns the conjugate of self.");
 
 static PyObject *
 GMPy_MPC_Conjugate_Method(PyObject *self, PyObject *args)
@@ -466,7 +466,7 @@ GMPy_MPC_NonZero_Slot(MPC_Object *self)
 
 PyDoc_STRVAR(GMPy_doc_mpc_sizeof_method,
 "__sizeof__($self)\n--\n\n"
-"Returns the amount of memory consumed by x.");
+"Returns the amount of memory consumed by self.");
 
 static PyObject *
 GMPy_MPC_SizeOf_Method(PyObject *self, PyObject *other)

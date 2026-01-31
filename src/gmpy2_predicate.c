@@ -39,7 +39,7 @@ PyDoc_STRVAR(GMPy_doc_context_is_nan,
 
 PyDoc_STRVAR(GMPy_doc_method_is_nan,
 "is_nan($self)\n--\n\n"
-"Return `True` if x is NaN (Not-A-Number) else `False`.");
+"Return `True` if self is NaN (Not-A-Number) else `False`.");
 
 static PyObject *
 GMPy_RealWithType_Is_NAN(PyObject *x, int xtype, CTXT_Object *context)
@@ -109,8 +109,8 @@ PyDoc_STRVAR(GMPy_doc_context_is_infinite,
 
 PyDoc_STRVAR(GMPy_doc_method_is_infinite,
 "is_infinite($self)\n--\n\n"
-"Return `True` if x is +Infinity or -Infinity. If x is an `mpc`, return `True`\n"
-"if either x.real or x.imag is infinite. Otherwise return `False`.");
+"Return `True` if self is +Infinity or -Infinity. If self is an `mpc`, return `True`\n"
+"if either self.real or self.imag is infinite. Otherwise return `False`.");
 
 static PyObject *
 GMPy_RealWithType_Is_Infinite(PyObject *x, int xtype, CTXT_Object *context)
@@ -170,8 +170,8 @@ PyDoc_STRVAR(GMPy_doc_context_is_finite,
 
 PyDoc_STRVAR(GMPy_doc_method_is_finite,
 "is_finite($self)\n--\n\n"
-"Return `True` if x is an actual number (i.e. non NaN or Infinity). If x is\n"
-"an `mpc`, return `True` if both x.real and x.imag are finite.");
+"Return `True` if self is an actual number (i.e. non NaN or Infinity). If self is\n"
+"an `mpc`, return `True` if both self.real and self.imag are finite.");
 
 static PyObject *
 GMPy_RealWithType_Is_Finite(PyObject *x, int xtype, CTXT_Object *context)
@@ -231,8 +231,8 @@ PyDoc_STRVAR(GMPy_doc_context_is_zero,
 
 PyDoc_STRVAR(GMPy_doc_method_is_zero,
 "is_zero($self)\n--\n\n"
-"Return `True` if x is equal to 0. If x is an `mpc`, return `True` if both x.real\n"
-"and x.imag are equal to 0.");
+"Return `True` if self is equal to 0. If self is an `mpc`, return `True` if both self.real\n"
+"and self.imag are equal to 0.");
 
 static PyObject *
 GMPy_RealWithType_Is_Zero(PyObject *x, int xtype, CTXT_Object *context)
@@ -290,7 +290,7 @@ PyDoc_STRVAR(GMPy_doc_context_is_signed,
 
 PyDoc_STRVAR(GMPy_doc_method_is_signed,
 "is_signed($self)\n--\n\n"
-"Return `True` if the sign bit of x is set.");
+"Return `True` if the sign bit of self is set.");
 
 static PyObject *
 GMPy_RealWithType_Is_Signed(PyObject *x, int xtype, CTXT_Object *context)
@@ -335,7 +335,7 @@ PyDoc_STRVAR(GMPy_doc_context_is_regular,
 
 PyDoc_STRVAR(GMPy_doc_method_is_regular,
 "is_regular($self)\n--\n\n"
-"Return `True` if x is not zero, NaN, or Infinity; `False` otherwise.");
+"Return `True` if self is not zero, NaN, or Infinity; `False` otherwise.");
 
 static PyObject *
 GMPy_RealWithType_Is_Regular(PyObject *x, int xtype, CTXT_Object *context)
@@ -380,7 +380,7 @@ PyDoc_STRVAR(GMPy_doc_context_is_integer,
 
 PyDoc_STRVAR(GMPy_doc_method_is_integer,
 "is_integer($self)\n--\n\n"
-"Return `True` if x is an integer; `False` otherwise.");
+"Return `True` if self is an integer; `False` otherwise.");
 
 static PyObject *
 GMPy_RealWithType_Is_Integer(PyObject *x, int xtype, CTXT_Object *context)
