@@ -25,6 +25,7 @@ Changes in gmpy2 2.3.0
 * Improve documentation for `format` support in gmpy2's types. (skirpichev)
 * Use 'g' (not 'f') as default formatting type for mpfr's. (skirpichev)
 * Specify case, when formatting type and precision are missing. (skirpichev)
+* Disable scripts/mp_bitcnt_t.diff in binary wheels. (skirpichev)
 
 Changes in gmpy2 2.2.2
 ----------------------
