@@ -65,7 +65,7 @@ GMPy_MPQ_Attrib_GetImag(MPQ_Object *self, void *closure)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_function_numer,
-"numer(x, /) -> mpz\n\n"
+"numer($module, x, /)\n--\n\n"
 "Return the numerator of x.");
 
 static PyObject *
@@ -89,7 +89,7 @@ GMPy_MPQ_Function_Numer(PyObject *self, PyObject *other)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_function_denom,
-"denom(x, /) -> mpz\n\n"
+"denom($module, x, /)\n--\n\n"
 "Return the denominator of x.");
 
 static PyObject *
@@ -113,7 +113,7 @@ GMPy_MPQ_Function_Denom(PyObject *self, PyObject *other)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_as_integer_ratio,
-"x.as_integer_ratio() -> tuple[mpz, mpz]\n\n\
+"as_integer_ratio($self)\n--\n\n\
 Return a pair of integers, whose ratio is exactly equal to the\n\
 original number.  The ratio is in lowest terms and has a\n\
 positive denominator.");
@@ -125,11 +125,11 @@ GMPy_MPQ_Method_As_Integer_Ratio(PyObject *self, PyObject *Py_UNUSED(ignored))
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_from_float,
-"mpq.from_float(f, /) -> mpq\n\n\
+"from_float($self, f, /)\n--\n\n\
 Converts a finite float to a rational number, exactly.");
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_from_decimal,
-"mpq.from_decimal(dec, /) -> mpq\n\n\
+"from_decimal($self, dec, /)\n--\n\n\
 Converts a finite `decimal.Decimal` instance to a rational number, exactly.");
 
 static PyObject *
@@ -154,7 +154,7 @@ GMPy_MPQ_Method_From_As_Integer_Ratio(PyTypeObject *type, PyObject *const *args,
 }
 
 PyDoc_STRVAR(GMPy_doc_function_qdiv,
-"qdiv(x, y=1, /) -> mpz | mpq\n\n"
+"qdiv($module, x, y=1, /)\n--\n\n"
 "Return x/y as `mpz` if possible, or as `mpq` if x is not exactly\n"
 "divisible by y.");
 
@@ -312,7 +312,8 @@ GMPy_MPQ_Method_Trunc(PyObject *self, PyObject *other)
     return (PyObject*)result;
 }
 
-PyDoc_STRVAR(GMPy_doc_mpq_method_round, "Round an mpq to power of 10.");
+PyDoc_STRVAR(GMPy_doc_mpq_method_round,
+"__round__($self, ndigits=0, /)\n--\n\nRound an mpq to power of 10.");
 
 static PyObject *
 GMPy_MPQ_Method_Round(PyObject *self, PyObject *args)
@@ -438,7 +439,7 @@ GMPy_MPQ_NonZero_Slot(MPQ_Object *self)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_limit_denominator,
-"x.limit_denominator(max_denominator=1000000) -> mpq\n\n"
+"limit_denominator($self, max_denominator=1000000)\n--\n\n"
 "Closest fraction to self with denominator at most max_denominator.");
 
 static PyObject *
@@ -579,8 +580,8 @@ GMPy_MPQ_Method_Limit_Denominator(PyObject *self, PyObject *const *args,
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_sizeof,
-"x.__sizeof__()\n\n"
-"Returns the amount of memory consumed by x. Note: deleted mpq objects\n"
+"__sizeof__($self)\n--\n\n"
+"Returns the amount of memory consumed by self. Note: deleted mpq objects\n"
 "are reused and may or may not be resized when a new value is assigned.");
 
 static PyObject *
@@ -592,8 +593,8 @@ GMPy_MPQ_Method_Sizeof(PyObject *self, PyObject *other)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_method_is_integer,
-"x.is_integer() -> bool\n\n"
-"Return `True` if x is an integer.");
+"is_integer($self)\n--\n\n"
+"Return `True` if self is an integer.");
 
 static PyObject *
 GMPy_MPQ_Method_IsInteger(PyObject *self, PyObject *other)

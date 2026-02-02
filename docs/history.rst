@@ -6,13 +6,25 @@ Release Notes
 Changes in gmpy2 2.3.0
 ----------------------
 
+* Drop support for CPython < 3.9, experimental support for PyPy. (skirpichev)
 * Improved support for mixed `mpfr` and `mpc` arithmetic.  (skirpichev)
 * Preliminary support for free-threaded builds.  (skirpichev)
 * Fix behavior and memory leaks for contexts.  (skirpichev)
 * Fix memory leaks for `mpfr` caching.  (skirpichev)
-* Fix rounding error in float(mpz).  (skirpichev)
+* Fix rounding errors in float(mpz) and float(mpq).  (skirpichev)
 * Add missing methods to `mpz` and `mpq`.  (skirpichev)
 * Fix round(mpz, ndigits) if ndigits is negative.  (skirpichev)
+* Use context's rounding mode per default in `format` and `round`. (skirpichev)
+* Use setuptools_scm to manage versions. (skirpichev)
+* Fix exception for float(mpfr('inf')) (was: OverflowError). (skirpichev)
+* Ignore sign bit of NaN's in string output. (skirpichev)
+* Support '%' formatting type for mpfr's. (skirpichev)
+* Support floating-point formatting types for mpz's. (skirpichev)
+* Set default precision to 6 for 'e'/'E' format types. (skirpichev)
+* Support "alternate form" in floating-point formatting. (skirpichev)
+* Improve documentation for `format` support in gmpy2's types. (skirpichev)
+* Use 'g' (not 'f') as default formatting type for mpfr's. (skirpichev)
+* Specify case, when formatting type and precision are missing. (skirpichev)
 
 Changes in gmpy2 2.2.2
 ----------------------

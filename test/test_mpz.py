@@ -1,6 +1,8 @@
+import inspect
 import math
 import numbers
 import pickle
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from fractions import Fraction
 
@@ -1844,3 +1846,12 @@ def test_mpz_thread_safe():
     tpe = ThreadPoolExecutor(max_workers=20)
     for _ in range(1000):
         tpe.submit(worker)
+
+
+@pytest.mark.skipif(sys.version_info < (3, 13), reason="requires v3.13+")
+def test_mpz_signatures():
+    cls = gmpy2.mpz
+    for f in dir(cls):
+        a = getattr(cls, f)
+        if callable(a) and f != '__class__':
+            _ = inspect.signature(a)  # not raises

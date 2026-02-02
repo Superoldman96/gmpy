@@ -8,8 +8,19 @@ MPC_VERSION=1.3.1
 
 PREFIX="$(pwd)/.local/"
 
+CURL_OPTS="--fail --location --retry 4 --connect-timeout 32"
+
+download () {
+  sleep_ivl=16
+  until curl ${CURL_OPTS} --remote-name $1
+  do
+    sleep ${sleep_ivl}
+    sleep_ivl=$((${sleep_ivl}*2))
+  done
+}
+
 # -- build GMP --
-curl -s -O https://ftp.gnu.org/gnu/gmp/gmp-${GMP_VERSION}.tar.xz
+download https://ftp.gnu.org/gnu/gmp/gmp-${GMP_VERSION}.tar.xz
 tar -xf gmp-${GMP_VERSION}.tar.xz
 cd gmp-${GMP_VERSION}
 # Patch the mp_bitcnt_t to "unsigned long long int" on WINDOWS AMD64:
@@ -42,7 +53,7 @@ make install
 cd ../
 
 # -- build MPFR --
-curl -s -O https://ftp.gnu.org/gnu/mpfr/mpfr-${MPFR_VERSION}.tar.gz
+download https://ftp.gnu.org/gnu/mpfr/mpfr-${MPFR_VERSION}.tar.gz
 tar -xf mpfr-${MPFR_VERSION}.tar.gz
 cd mpfr-${MPFR_VERSION}
 ./configure --enable-shared \
@@ -54,7 +65,7 @@ make -j6
 make install
 cd ../
 # -- build MPC --
-curl -s -O https://ftp.gnu.org/gnu/mpc/mpc-${MPC_VERSION}.tar.gz
+download https://ftp.gnu.org/gnu/mpc/mpc-${MPC_VERSION}.tar.gz
 tar -xf mpc-${MPC_VERSION}.tar.gz
 cd mpc-${MPC_VERSION}
 

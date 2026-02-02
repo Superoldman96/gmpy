@@ -101,11 +101,11 @@ GMPy_Complex_Mul_2exp(PyObject *x, PyObject *y, CTXT_Object *context)
 }
 
 PyDoc_STRVAR(GMPy_doc_context_mul_2exp,
-"context.mul_2exp(x, n, /) -> mpfr | mpc\n\n"
+"mul_2exp($self, x, n, /)\n--\n\n"
 "Return `mpfr` or `mpc` multiplied by 2**n.");
 
 PyDoc_STRVAR(GMPy_doc_function_mul_2exp,
-"mul_2exp(x, n, /) -> mpfr | mpc\n\n"
+"mul_2exp($module, x, n, /)\n--\n\n"
 "Return x multiplied by 2**n.");
 
 static PyObject *
@@ -222,11 +222,11 @@ GMPy_Complex_Div_2exp(PyObject *x, PyObject *y, CTXT_Object *context)
 }
 
 PyDoc_STRVAR(GMPy_doc_context_div_2exp,
-"context.div_2exp(x, n, /) -> mpfr | mpc\n\n"
+"div_2exp($self, x, n, /)\n--\n\n"
 "Return `mpfr` or `mpc` divided by 2**n.");
 
 PyDoc_STRVAR(GMPy_doc_function_div_2exp,
-"div_2exp(x, n, /) -> mpfr | mpc\n\n"
+"div_2exp($module, x, n, /)\n--\n\n"
 "Return x divided by 2**n.");
 
 static PyObject *

@@ -8,7 +8,7 @@ on PyPI.  You can install latest release with pip::
 
 or some specific version with::
 
-    pip install gmpy2==2.1.5
+    pip install gmpy2==2.2.2
 
 
 From Sources

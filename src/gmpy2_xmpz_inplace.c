@@ -465,4 +465,3 @@ GMPy_XMPZ_IIor_Slot(PyObject *self, PyObject *other)
 
     Py_RETURN_NOTIMPLEMENTED;
 }
-

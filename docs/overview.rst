@@ -33,5 +33,5 @@ precision is 53 bits --- just same as for Python's `float` and `complex` types.
    flags, the exponent range, the default precision, etc.  That is, the MPFR
    should be build with the ``--enable-thread-safe`` configure option.
 
-Operator overloading is fully supported.  Coversion from native Python types is
+Operator overloading is fully supported.  Conversion from native Python types is
 optimized for performance.

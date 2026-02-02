@@ -25,8 +25,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 PyDoc_STRVAR(GMPy_doc_mpz_format,
-"x.__format__(fmt) -> str\n\n"
-"Return a Python string by formatting 'x' using the format string 'fmt'.\n\n"
+"__format__($self, fmt, /)\n--\n\n"
+"Return a Python string by formatting self using the format string 'fmt'.\n\n"
 "Same as for built-in `int`'s, except that for floating-point\n"
 "format types, `mpfr` is used to convert the integer to a floating-point\n"
 "number before formatting.");
@@ -177,8 +177,8 @@ GMPy_MPZ_Format(PyObject *self, PyObject *args)
     } while (0);
 
 PyDoc_STRVAR(GMPy_doc_mpfr_format,
-"x.__format__(fmt) -> str\n\n"
-"Return a Python string by formatting 'x' using the format string 'fmt'.\n\n"
+"__format__($self, fmt, /)\n--\n\n"
+"Return a Python string by formatting self using the format string 'fmt'.\n\n"
 "The format specification adopts the same general form as Python's\n"
 "Format Specification Mini-Language.  All of Python's format types are\n"
 "supported, with the exception of 'n'.  Format types 'a' and 'A' (use\n"
@@ -193,7 +193,7 @@ PyDoc_STRVAR(GMPy_doc_mpfr_format,
 "    * 'N': rounding to nearest\n\n"
 "The rounding option must be set right before the presentation type.\n"
 "If it's not specified, the context's rounding mode is used.\n\n"
-"The default format is like str(x) output, as altered by the other\n"
+"The default format is like str(self) output, as altered by the other\n"
 "format modifiers.");
 
 static PyObject *
@@ -435,8 +435,8 @@ GMPy_MPFR_Format(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpc_format,
-"x.__format__(fmt) -> str\n\n"
-"Return a Python string by formatting 'x' using the format string 'fmt'.\n\n"
+"__format__($self, fmt, /)\n--\n\n"
+"Return a Python string by formatting self using the format string 'fmt'.\n\n"
 "All of `mpfr`'s format types and options are supported, with the exception\n"
 "of '%' format type, '=' alignment and zero padding.");
 
@@ -780,10 +780,9 @@ GMPy_MPC_Format(PyObject *self, PyObject *args)
 
 /* produce digits for an mpz in requested base, default 10 */
 PyDoc_STRVAR(GMPy_doc_mpz_digits_method,
-"x.digits(base=10, /) -> str\n\n"
-"Return Python string representing x in the given base. Values for\n"
-"base can range between 2 to 62. A leading '-' is present if x<0\n"
-"but no leading '+' is present if x>=0.");
+"digits($self, base=10, /)\n--\n\n"
+"Return Python string representing self in the given base. Values for\n"
+"base can range between 2 to 62. A leading '-' is present for negatives");
 
 static PyObject *
 GMPy_MPZ_Digits_Method(PyObject *self, PyObject *args)
@@ -810,10 +809,9 @@ GMPy_XMPZ_Digits_Method(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpq_digits_method,
-"x.digits(base=10, /) -> str\n\n"
-"Return a Python string representing x in the given base (2 to 62,\n"
-"default is 10). A leading '-' is present if x<0, but no leading '+'\n"
-"is present if x>=0.\n");
+"digits($self, base=10, /)\n--\n\n"
+"Return a Python string representing self in the given base (2 to 62,\n"
+"default is 10). A leading '-' is present for negatives.");
 
 static PyObject *
 GMPy_MPQ_Digits_Method(PyObject *self, PyObject *args)
@@ -829,10 +827,10 @@ GMPy_MPQ_Digits_Method(PyObject *self, PyObject *args)
 
 
 PyDoc_STRVAR(GMPy_doc_mpfr_digits_method,
-"x.digits(base=10, prec=0, /) -> tuple[str, int, int]\n\n"
+"digits($self, base=10, prec=0, /)\n--\n\n"
 "Returns up to 'prec' digits in the given base. If 'prec' is 0, as many\n"
 "digits that are available are returned. No more digits than available\n"
-"given x's precision are returned. 'base' must be between 2 and 62,\n"
+"given self's precision are returned. 'base' must be between 2 and 62,\n"
 "inclusive. The result is a three element `tuple` containing the mantissa,\n"
 "the exponent, and the number of bits of precision.");
 
@@ -849,9 +847,9 @@ GMPy_MPFR_Digits_Method(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(GMPy_doc_mpc_digits_method,
-"c.digits(base=10, prec=0, /) -> tuple[tuple[str, int, int], tuple[str, int, int]]\n\n"
+"digits($self, base=10, prec=0, /)\n--\n\n"
 "Returns up to 'prec' digits in the given base. If 'prec' is 0, as many\n"
-"digits that are available given c's precision are returned. 'base' must\n"
+"digits that are available given self's precision are returned. 'base' must\n"
 "be between 2 and 62. The result consists of 2 three-element tuples that\n"
 "contain the mantissa, exponent, and number of bits of precision of the\n"
 "real and imaginary components.");
@@ -869,8 +867,8 @@ GMPy_MPC_Digits_Method(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(GMPy_doc_context_digits,
-"digits(x, base=10, prec=0, /) -> str | tuple\n\n"
-"Return string representing a number x.");
+"digits($module, x, base=10, prec=0, /)\n--\n\n"
+"Return string representing a number.");
 
 static PyObject *
 GMPy_Context_Digits(PyObject *self, PyObject *args)
