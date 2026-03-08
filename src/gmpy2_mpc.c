@@ -93,7 +93,7 @@ _GMPy_MPC_Cleanup(MPC_Object **v, CTXT_Object *ctext)
 
     /* GMPY_MPC_EXCEPTIONS(V, CTX) */
     {
-        int _invalid = 0, _underflow = 0, _overflow = 0, _inexact = 0;
+        int _invalid = 0, _underflow = 0, _overflow = 0, _inexact = 0, _divby0 = 0;
         int rcr, rci;
         rcr = MPC_INEX_RE((*v)->rc);
         rci = MPC_INEX_IM((*v)->rc);
@@ -113,6 +113,10 @@ _GMPy_MPC_Cleanup(MPC_Object **v, CTXT_Object *ctext)
             ctext->ctx.overflow = 1;
             _overflow = 1;
         }
+        if (mpfr_divby0_p()) {
+            ctext->ctx.divzero = 1;
+            _divby0 = 1;
+        }
         if (ctext->ctx.traps) {
             if ((ctext->ctx.traps & TRAP_UNDERFLOW) && _underflow) { \
                 GMPY_UNDERFLOW("underflow");
@@ -131,6 +135,11 @@ _GMPy_MPC_Cleanup(MPC_Object **v, CTXT_Object *ctext)
             }
             if ((ctext->ctx.traps & TRAP_INVALID) && _invalid) {
                 GMPY_INVALID("invalid operation");
+                Py_XDECREF((PyObject*)(*v));
+                (*v) = NULL;
+            }
+            if ((ctext->ctx.traps & TRAP_DIVZERO) && _divby0) {
+                GMPY_DIVZERO("division by zero");
                 Py_XDECREF((PyObject*)(*v));
                 (*v) = NULL;
             }

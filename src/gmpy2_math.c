@@ -62,7 +62,26 @@ PyDoc_STRVAR(GMPy_doc_function_atan,
 "atan($module, x, /)\n--\n\n"
 "Return inverse tangent of x; result in radians.");
 
-GMPY_MPFR_MPC_UNIOP_EXWT(Atan, atan)
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
+static inline int
+mpc_atan_(mpc_ptr rop, mpc_srcptr op, mpc_rnd_t rnd)
+{
+    int ret = mpc_atan(rop, op, rnd);
+
+    if (mpfr_zero_p(mpc_realref(op))
+        && (mpfr_cmp_si(mpc_imagref(op), 1) == 0
+            || mpfr_cmp_si(mpc_imagref(op), -1) == 0))
+    {
+        mpfr_set_divby0();
+    }
+    return ret;
+}
+#else
+#  define mpc_atan_ mpc_atan
+#endif
+#define mpfr_atan_ mpfr_atan
+
+GMPY_MPFR_MPC_UNIOP_EXWT(Atan, atan_)
 
 PyDoc_STRVAR(GMPy_doc_context_sinh,
 "sinh($self, x, /)\n--\n\n"
@@ -698,6 +717,25 @@ _GMPy_MPFR_Atanh(PyObject *x, CTXT_Object *context)
     return (PyObject*)result;
 }
 
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
+static inline int
+mpc_atanh_(mpc_ptr rop, mpc_srcptr op, mpc_rnd_t rnd)
+{
+    int ret = mpc_atanh(rop, op, rnd);
+
+    if (mpfr_zero_p(mpc_imagref(op))
+        && (mpfr_cmp_si(mpc_realref(op), 1) == 0
+            || mpfr_cmp_si(mpc_realref(op), -1) == 0))
+    {
+        mpfr_set_divby0();
+    }
+    return ret;
+}
+#else
+#  define mpc_atanh_ mpc_atanh
+#endif
+#define mpfr_atanh_ mpfr_atanh
+
 static PyObject *
 _GMPy_MPC_Atanh(PyObject *x, CTXT_Object *context)
 {
@@ -707,7 +745,7 @@ _GMPy_MPC_Atanh(PyObject *x, CTXT_Object *context)
         return NULL;
     }
 
-    result->rc = mpc_atanh(result->c, MPC(x), GET_MPC_ROUND(context));
+    result->rc = mpc_atanh_(result->c, MPC(x), GET_MPC_ROUND(context));
     _GMPy_MPC_Cleanup(&result, context);
     return (PyObject*)result;
 }
@@ -1029,7 +1067,23 @@ PyDoc_STRVAR(GMPy_doc_function_log10,
 "log10($module, x, /)\n--\n\n"
 "Return the base-10 logarithm of x.");
 
-GMPY_MPFR_MPC_UNIOP_EXWT(Log10, log10)
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
+static inline int
+mpc_log10_(mpc_ptr rop, mpc_srcptr op, mpc_rnd_t rnd)
+{
+    int ret = mpc_log(rop, op, rnd);
+
+    if (mpc_zero_p(op)) {
+        mpfr_set_divby0();
+    }
+    return ret;
+}
+#else
+#  define mpc_log10_ mpc_log10
+#endif
+#define mpfr_log10_ mpfr_log10
+
+GMPY_MPFR_MPC_UNIOP_EXWT(Log10, log10_)
 
 PyDoc_STRVAR(GMPy_doc_context_log,
 "log($self, x, /)\n--\n\n"
@@ -1039,7 +1093,23 @@ PyDoc_STRVAR(GMPy_doc_function_log,
 "log($module, x, /)\n--\n\n"
 "Return the natural logarithm of x.");
 
-GMPY_MPFR_MPC_UNIOP_EXWT(Log, log)
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
+static inline int
+mpc_log_(mpc_ptr rop, mpc_srcptr op, mpc_rnd_t rnd)
+{
+    int ret = mpc_log(rop, op, rnd);
+
+    if (mpc_zero_p(op)) {
+        mpfr_set_divby0();
+    }
+    return ret;
+}
+#else
+#  define mpc_log_ mpc_log
+#endif
+#define mpfr_log_ mpfr_log
+
+GMPY_MPFR_MPC_UNIOP_EXWT(Log, log_)
 
 PyDoc_STRVAR(GMPy_doc_context_exp,
 "exp($self, x, /)\n--\n\n"

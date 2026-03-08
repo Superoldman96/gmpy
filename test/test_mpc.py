@@ -593,3 +593,38 @@ def test_mpc_signatures():
         a = getattr(cls, f)
         if callable(a) and f != '__class__':
             _ = inspect.signature(a)  # not raises
+
+
+def test_issue_678():
+    ctx = gmpy2.get_context()
+    ctx.clear_flags()
+    assert ctx.divzero == False
+    gmpy2.log(mpc(0))
+    assert ctx.divzero == True
+    MPC_VERSION = gmpy2.mpc_version().removeprefix('MPC ')
+    if MPC_VERSION >= '1.4.0':
+        ctx.clear_flags()
+        gmpy2.log2(mpc(0))
+        assert ctx.divzero == True
+    ctx.clear_flags()
+    gmpy2.log10(mpc(0))
+    assert ctx.divzero == True
+    ctx.clear_flags()
+    gmpy2.atan(mpc(1j))
+    assert ctx.divzero == True
+    ctx.clear_flags()
+    gmpy2.atanh(mpc(-1))
+    assert ctx.divzero == True
+
+    ctx.clear_flags()
+    mpc(1)/mpc(0)
+    assert ctx.divzero == True
+    ctx.clear_flags()
+    mpc(1)/0
+    assert ctx.divzero == True
+    ctx.clear_flags()
+    mpfr(1)/mpc(0)
+    assert ctx.divzero == True
+    ctx.clear_flags()
+    1j/mpc(0)
+    assert ctx.divzero == True
