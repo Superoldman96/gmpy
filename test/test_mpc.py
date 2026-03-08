@@ -544,10 +544,12 @@ def test_issue_650():
 def test_mpc_mixed_arithmetics():
     from itertools import combinations_with_replacement
     from math import inf, nan
+    from cmath import isclose, isfinite
     from operator import add, mul, sub, truediv
 
     gmpy2.set_context(gmpy2.ieee(64))
-    gmpy2.get_context().trap_divzero = True
+    ctx = gmpy2.get_context()
+    ctx.trap_divzero = True
     cases = [0.0, -0.0, inf, -inf, nan, -1.0, 1.0, 2.0, -3.0]
 
     for x in cases:
@@ -556,33 +558,30 @@ def test_mpc_mixed_arithmetics():
             z = complex(*z)
             gz = gmpy2.mpc(z)
             for op in [add, mul, sub, truediv]:
+                g1 = r1 = 0j
                 try:
                     r1 = op(x, z)
                 except ZeroDivisionError:
-                    try:
+                    with pytest.raises(ZeroDivisionError):
                         op(gx, gz)
-                        assert False
-                    except ZeroDivisionError:
-                        g1 = r1 = 0j
+                    ctx.clear_flags()
                 else:
                     g1 = op(gx, gz)
+                g2 = r2 = 0j
                 try:
                     r2 = op(z, x)
                 except ZeroDivisionError:
-                    try:
+                    with pytest.raises(ZeroDivisionError):
                         op(gz, gx)
-                        assert False
-                    except ZeroDivisionError:
-                        g2 = r2 = 0j
+                    ctx.clear_flags()
                 else:
                     g2 = op(gz, gx)
                 if op not in [sub, truediv]:
                     assert str(r1) == str(r2)
                     assert str(g1) == str(g2)
                 if str(r1) != str(complex(g1)):
-                    assert cmath.isfinite(r1) and x and all(_ for _ in [z.real,
-                                                                        z.imag])
-                    assert cmath.isclose(r1, complex(g1))
+                    assert isfinite(r1) and x and all(_ for _ in [z.real, z.imag])
+                    assert isclose(r1, complex(g1))
                 assert str(r2) == str(complex(g2))
 
 
