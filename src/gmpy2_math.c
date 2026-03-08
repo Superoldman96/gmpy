@@ -288,7 +288,11 @@ PyDoc_STRVAR(GMPy_doc_function_log2,
 "log2($module, x, /)\n--\n\n"
 "Return base-2 logarithm of x.");
 
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
 GMPY_MPFR_UNIOP_EXWT(Log2, log2)
+#else
+GMPY_MPFR_MPC_UNIOP_EXWT(Log2, log2)
+#endif
 
 PyDoc_STRVAR(GMPy_doc_context_exp2,
 "exp2($self, x, /)\n--\n\n"
@@ -298,7 +302,11 @@ PyDoc_STRVAR(GMPy_doc_function_exp2,
 "exp2($module, x, /)\n--\n\n"
 "Return 2**x.");
 
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
 GMPY_MPFR_UNIOP_EXWT(Exp2, exp2)
+#else
+GMPY_MPFR_MPC_UNIOP_EXWT(Exp2, exp2)
+#endif
 
 PyDoc_STRVAR(GMPy_doc_context_exp10,
 "exp10($self, x, /)\n--\n\n"
@@ -308,7 +316,11 @@ PyDoc_STRVAR(GMPy_doc_function_exp10,
 "exp10($module, x, /)\n--\n\n"
 "Return 10**x.");
 
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
 GMPY_MPFR_UNIOP_EXWT(Exp10, exp10)
+#else
+GMPY_MPFR_MPC_UNIOP_EXWT(Exp10, exp10)
+#endif
 
 PyDoc_STRVAR(GMPy_doc_context_log1p,
 "log1p($self, x, /)\n--\n\n"
