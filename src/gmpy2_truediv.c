@@ -24,7 +24,9 @@
  * License along with GMPY2; if not, see <http://www.gnu.org/licenses/>    *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "fr_div.c"
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
+#  include "fr_div.c"
+#endif
 
 /* This file implements the / operator, gmpy2.div() and context.div().
  *
