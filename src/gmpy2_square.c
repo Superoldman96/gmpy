@@ -141,6 +141,7 @@ _GMPy_MPC_Square(PyObject *x, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     mpc_sqr(result->c, MPC(x), GET_MPC_ROUND(context));
     _GMPy_MPC_Cleanup(&result, context);
     return (PyObject*)result;

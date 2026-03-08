@@ -169,6 +169,7 @@ _GMPy_MPC_Minus(PyObject *x, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     result->rc = mpc_neg(result->c, MPC(x), GET_MPC_ROUND(context));
     _GMPy_MPC_Cleanup(&result, context);
     return (PyObject*)result;

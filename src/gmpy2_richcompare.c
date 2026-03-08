@@ -335,6 +335,7 @@ GMPy_RichCompare_Slot(PyObject *a, PyObject *b, int op)
             if (!(tempb = (PyObject*)GMPy_MPFR_New(mpfr_get_prec(mpc_realref(MPC(a))), context))) {
                 return NULL;
             }
+            mpfr_clear_flags();
             mpc_real(MPFR(tempb), MPC(a), GET_MPFR_ROUND(context));
             result = GMPy_RichCompare_Slot(tempb, b, op);
             Py_DECREF(tempb);

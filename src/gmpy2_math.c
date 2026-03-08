@@ -556,6 +556,7 @@ _GMPy_MPC_Acos(PyObject *x, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     result->rc = mpc_acos(result->c, MPC(x), GET_MPC_ROUND(context));
     _GMPy_MPC_Cleanup(&result, context);
     return (PyObject*)result;
@@ -641,6 +642,7 @@ _GMPy_MPC_Asin(PyObject *x, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     result->rc = mpc_asin(result->c, MPC(x), GET_MPC_ROUND(context));
     _GMPy_MPC_Cleanup(&result, context);
     return (PyObject*)result;
@@ -745,6 +747,7 @@ _GMPy_MPC_Atanh(PyObject *x, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     result->rc = mpc_atanh_(result->c, MPC(x), GET_MPC_ROUND(context));
     _GMPy_MPC_Cleanup(&result, context);
     return (PyObject*)result;
@@ -871,6 +874,7 @@ _GMPy_MPC_Sin_Cos(PyObject *x, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     code = mpc_sin_cos(s->c, c->c, MPC(x), GET_MPC_ROUND(context), GET_MPC_ROUND(context));
 
     s->rc = MPC_INEX1(code);
@@ -1193,6 +1197,7 @@ GMPy_ComplexWithType_Sqrt(PyObject *x, int xtype, CTXT_Object *context)
     }
 
     if (IS_TYPE_MPC(xtype)) {
+        mpfr_clear_flags();
         result->rc = mpc_sqrt(result->c, MPC(x), GET_MPFR_ROUND(context));
         _GMPy_MPC_Cleanup(&result, context);
         return (PyObject*)result;
@@ -1206,6 +1211,7 @@ GMPy_ComplexWithType_Sqrt(PyObject *x, int xtype, CTXT_Object *context)
             return NULL;
         }
 
+        mpfr_clear_flags();
         result->rc = mpc_sqrt(result->c, MPC(tempx), GET_MPFR_ROUND(context));
         Py_DECREF(tempx);
         _GMPy_MPC_Cleanup(&result, context);

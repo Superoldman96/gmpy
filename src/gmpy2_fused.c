@@ -158,6 +158,7 @@ _GMPy_MPC_FMA(PyObject *x, PyObject *y, PyObject *z, CTXT_Object *context)
         /* LCOV_EXCL_STOP */
     }
 
+    mpfr_clear_flags();
     result->rc = mpc_fma(result->c, MPC(x), MPC(y), MPC(z), GET_MPC_ROUND(context));
     _GMPy_MPC_Cleanup(&result, context);
     return (PyObject*)result;
@@ -332,6 +333,7 @@ _GMPy_MPC_FMS(PyObject *x, PyObject *y, PyObject *z, CTXT_Object *context)
 
     temp = GMPy_MPC_From_ComplexWithTypeAndCopy(z, OBJ_TYPE_MPC, 1, 1, context);
 
+    mpfr_clear_flags();
     mpc_neg(MPC(temp), MPC(temp), GET_MPC_ROUND(context));
     result->rc = mpc_fma(result->c, MPC(x), MPC(y), MPC(temp), GET_MPC_ROUND(context));
     Py_DECREF(temp);
