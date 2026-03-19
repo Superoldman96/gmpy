@@ -50,6 +50,25 @@ mpc_ceil_log2 (mpfr_prec_t d)
   return exp;
 }
 
+/* Recent drafts for upcoming C2Y standard introduce (N3460) definitions
+   for "real / complex" and "complex / complex" divisions.
+
+   For instance, in the draft N3685, section 6.5.6, paragraph 9:
+   > - The / operator where both operands are complex with values
+   >   x + iy and u + iv computes (xu + yv)/(u^2 + v^2) + i(yu - xv)/(u^2 + v^2).
+   > - The / operator where the first operand is real with value x
+   >   and the second operand is complex with value u + iv computes
+   >   (xu)/(u^2 + v^2) + i(-xv)/(u^2 + v^2).
+
+   Also, in Annex G, section 3.2, paragraph 2:
+   > if the second operand of the / operator is complex,
+   > the operator raises floating-point exceptions if appropriate
+   > for the calculation of the parts
+
+   On this ground, we set divide-by-zero exception in mpc_div_zero() if either
+   real or imaginary part of the dividend is a regular number.
+   */
+
 /* this routine deals with the case where w is zero */
 static int
 mpc_div_zero (mpc_ptr a, mpfr_srcptr z, mpc_srcptr w, mpc_rnd_t rnd)
@@ -63,6 +82,8 @@ mpc_div_zero (mpc_ptr a, mpfr_srcptr z, mpc_srcptr w, mpc_rnd_t rnd)
    mpfr_mul (mpc_realref (a), infty, z, MPC_RND_RE (rnd));
    mpfr_clear (infty);
    mpfr_set_nan (mpc_imagref (a));
+   if (mpfr_regular_p (z))
+     mpfr_set_divby0 ();
    return MPC_INEX (0, 0); /* exact */
 }
 
@@ -434,5 +455,4 @@ _mpc_fr_div (mpc_ptr a, mpfr_srcptr b, mpc_srcptr c, mpc_rnd_t rnd)
 
    return MPC_INEX (inexact_re, inexact_im);
 }
-
 #define mpc_fr_div _mpc_fr_div

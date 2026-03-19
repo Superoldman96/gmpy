@@ -24,7 +24,9 @@
  * License along with GMPY2; if not, see <http://www.gnu.org/licenses/>    *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "fr_div.c"
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
+#  include "fr_div.c"
+#endif
 
 /* This file implements the / operator, gmpy2.div() and context.div().
  *
@@ -209,6 +211,23 @@ GMPy_Real_TrueDivWithType(PyObject *x, int xtype, PyObject *y, int ytype,
     /* LCOV_EXCL_STOP */
 }
 
+#if !defined(MPC_VERSION) || (MPC_VERSION < MPC_VERSION_NUM(1,4,0))
+static inline int
+mpc_div_(mpc_ptr rop, mpc_srcptr op1, mpc_srcptr op2, mpc_rnd_t rnd)
+{
+    int ret = mpc_div(rop, op1, op2, rnd);
+
+    if (mpc_zero_p(op2) && (mpfr_regular_p(mpc_realref(op1))
+                            || mpfr_regular_p(mpc_imagref(op1))))
+    {
+        mpfr_set_divby0();
+    }
+    return ret;
+}
+#else
+#  define mpc_div_ mpc_div
+#endif
+
 static PyObject *
 GMPy_Complex_TrueDivWithType(PyObject *x, int xtype, PyObject *y, int ytype,
                              CTXT_Object *context)
@@ -234,7 +253,8 @@ GMPy_Complex_TrueDivWithType(PyObject *x, int xtype, PyObject *y, int ytype,
             }
         }
         GMPY_MAYBE_BEGIN_ALLOW_THREADS(context);
-        result->rc = mpc_div(result->c, MPC(x), MPC(y), GET_MPC_ROUND(context));
+        mpfr_clear_flags();
+        result->rc = mpc_div_(result->c, MPC(x), MPC(y), GET_MPC_ROUND(context));
         GMPY_MAYBE_END_ALLOW_THREADS(context);
         _GMPy_MPC_Cleanup(&result, context);
         return (PyObject*)result;
@@ -262,6 +282,7 @@ GMPy_Complex_TrueDivWithType(PyObject *x, int xtype, PyObject *y, int ytype,
             return NULL;
             /* LCOV_EXCL_STOP */
         }
+        mpfr_clear_flags();
         result->rc = mpc_div_fr(result->c, tempx->c, MPFR(tempy), GET_MPC_ROUND(context));
         Py_DECREF((PyObject*)tempx);
         Py_DECREF((PyObject*)tempy);
@@ -291,6 +312,7 @@ GMPy_Complex_TrueDivWithType(PyObject *x, int xtype, PyObject *y, int ytype,
             return NULL;
             /* LCOV_EXCL_STOP */
         }
+        mpfr_clear_flags();
         result->rc = mpc_fr_div(result->c, MPFR(tempx), tempy->c, GET_MPC_ROUND(context));
         Py_DECREF((PyObject*)tempx);
         Py_DECREF((PyObject*)tempy);
@@ -320,7 +342,8 @@ GMPy_Complex_TrueDivWithType(PyObject *x, int xtype, PyObject *y, int ytype,
             /* LCOV_EXCL_STOP */
         }
 
-        result->rc = mpc_div(result->c, tempx->c, tempy->c, GET_MPC_ROUND(context));
+        mpfr_clear_flags();
+        result->rc = mpc_div_(result->c, tempx->c, tempy->c, GET_MPC_ROUND(context));
         Py_DECREF((PyObject*)tempx);
         Py_DECREF((PyObject*)tempy);
         _GMPy_MPC_Cleanup(&result, context);

@@ -107,6 +107,7 @@ GMPy_Complex_Root_Of_Unity(PyObject *n, PyObject *k, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     result->rc = mpc_rootofunity(result->c, n_val, k_val, GET_MPC_ROUND(context));
 
     _GMPy_MPC_Cleanup(&result, context);
@@ -283,6 +284,7 @@ GMPy_Complex_Rect(PyObject *r, PyObject *phi, CTXT_Object *context)
         return NULL;
     }
 
+    mpfr_clear_flags();
     mpfr_cos(mpc_realref(result->c), tempy->f, GET_REAL_ROUND(context));
     mpfr_mul(mpc_realref(result->c), mpc_realref(result->c), tempx->f, GET_REAL_ROUND(context));
     mpfr_sin(mpc_imagref(result->c), tempy->f, GET_IMAG_ROUND(context));
@@ -393,6 +395,7 @@ GMPy_MPC_Conjugate_Method(PyObject *self, PyObject *args)
         return NULL;
     }
 
+    mpfr_clear_flags();
     result->rc = mpc_conj(result->c, MPC(self), GET_MPC_ROUND(context));
 
     _GMPy_MPC_Cleanup(&result, context);
@@ -431,6 +434,7 @@ GMPy_MPC_GetImag_Attrib(MPC_Object *self, void *closure)
     CHECK_CONTEXT(context);
 
     if ((result = GMPy_MPFR_New(iprec, context))) {
+        mpfr_clear_flags();
         result->rc = mpc_imag(result->f, self->c, GET_MPFR_ROUND(context));
         _GMPy_MPFR_Cleanup(&result, context);
     }
@@ -450,6 +454,7 @@ GMPy_MPC_GetReal_Attrib(MPC_Object *self, void *closure)
     CHECK_CONTEXT(context);
 
     if ((result = GMPy_MPFR_New(rprec, context))) {
+        mpfr_clear_flags();
         result->rc = mpc_real(result->f, self->c, context->ctx.mpfr_round);
         _GMPy_MPFR_Cleanup(&result, context);
     }

@@ -87,6 +87,7 @@ GMPy_Complex_Mul_2exp(PyObject *x, PyObject *y, CTXT_Object *context)
         /* LCOV_EXCL_STOP */
     }
 
+    mpfr_clear_flags();
     if (is_signed) {
         result->rc = mpc_mul_2si(result->c, tempx->c, exp,
                                  GET_MPC_ROUND(context));
@@ -208,6 +209,7 @@ GMPy_Complex_Div_2exp(PyObject *x, PyObject *y, CTXT_Object *context)
         /* LCOV_EXCL_STOP */
     }
 
+    mpfr_clear_flags();
     if (is_signed) {
         result->rc = mpc_div_2si(result->c, tempx->c, exp,
                                  GET_MPC_ROUND(context));

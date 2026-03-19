@@ -126,6 +126,7 @@ GMPy_ComplexWithType_##NAME(PyObject *x, int xtype, CTXT_Object *context) \
             Py_DECREF(tempx); \
             return NULL; \
         } \
+        mpfr_clear_flags(); \
         result->rc = mpc_##FUNC(result->c, MPC(tempx), GET_MPC_ROUND(context)); \
         _GMPy_MPC_Cleanup(&result, context); \
         Py_DECREF(tempx); \

@@ -595,6 +595,7 @@ GMPy_Complex_PowWithType(PyObject *base, int btype, PyObject *exp, int etype,
         if (!(tempz = GMPy_MPZ_From_IntegerWithType(exp, etype, context))) {
             goto err;
         }
+        mpfr_clear_flags();
         result->rc = mpc_pow_z(result->c, tempb->c, tempz->z, GET_MPC_ROUND(context));
         goto done;
     }
@@ -604,6 +605,7 @@ GMPy_Complex_PowWithType(PyObject *base, int btype, PyObject *exp, int etype,
             goto err;
         }
 
+        mpfr_clear_flags();
         result->rc = mpc_pow_fr(result->c, tempb->c, tempf->f, GET_MPC_ROUND(context));
         goto done;
     }
@@ -613,6 +615,7 @@ GMPy_Complex_PowWithType(PyObject *base, int btype, PyObject *exp, int etype,
             goto err;
         }
 
+        mpfr_clear_flags();
         result->rc = mpc_pow(result->c, tempb->c, tempe->c, GET_MPC_ROUND(context));
         goto done;
     }

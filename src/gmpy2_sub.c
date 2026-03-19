@@ -261,6 +261,7 @@ GMPy_Complex_SubWithType(PyObject *x, int xtype, PyObject *y, int ytype,
     }
 
     if (IS_TYPE_MPC(xtype) && IS_TYPE_MPC(ytype)) {
+        mpfr_clear_flags();
         result->rc = mpc_sub(result->c, MPC(x), MPC(y), GET_MPC_ROUND(context));
         _GMPy_MPC_Cleanup(&result, context);
         return (PyObject*)result;
@@ -279,6 +280,7 @@ GMPy_Complex_SubWithType(PyObject *x, int xtype, PyObject *y, int ytype,
             return NULL;
             /* LCOV_EXCL_STOP */
         }
+        mpfr_clear_flags();
         result->rc = mpc_sub_fr(result->c, tempx->c, MPFR(tempy), GET_MPC_ROUND(context));
         Py_DECREF((PyObject*)tempx);
         Py_DECREF((PyObject*)tempy);
@@ -299,6 +301,7 @@ GMPy_Complex_SubWithType(PyObject *x, int xtype, PyObject *y, int ytype,
             return NULL;
             /* LCOV_EXCL_STOP */
         }
+        mpfr_clear_flags();
         result->rc = mpc_fr_sub(result->c, MPFR(tempx), tempy->c, GET_MPC_ROUND(context));
         Py_DECREF((PyObject*)tempx);
         Py_DECREF((PyObject*)tempy);
@@ -319,6 +322,7 @@ GMPy_Complex_SubWithType(PyObject *x, int xtype, PyObject *y, int ytype,
             /* LCOV_EXCL_STOP */
         }
 
+        mpfr_clear_flags();
         result->rc = mpc_sub(result->c, tempx->c, tempy->c, GET_MPC_ROUND(context));
         Py_DECREF((PyObject*)tempx);
         Py_DECREF((PyObject*)tempy);
