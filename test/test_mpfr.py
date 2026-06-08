@@ -995,3 +995,19 @@ def test_mpfr_signatures():
         a = getattr(cls, f)
         if callable(a) and f != '__class__':
             _ = inspect.signature(a)  # not raises
+
+
+@pytest.mark.skipif(gmpy2.get_emin_min() > -2**47+1,
+                    reason="too small exponent range")
+def test_issue_692():
+    ctx = get_context()
+    emin_old = gmpy2.get_emin()
+    emax_old = gmpy2.get_emax()
+    gmpy2.set_emin(gmpy2.get_emin_min())
+    gmpy2.set_emax(gmpy2.get_emax_max())
+    ctx.emin = -2**47+1
+    ctx.emax = 2**47-1
+    n = mpfr(2)**1073741823
+    assert gmpy2.get_exp(n) == 1073741824
+    gmpy2.set_emin(emin_old)
+    gmpy2.set_emax(emax_old)

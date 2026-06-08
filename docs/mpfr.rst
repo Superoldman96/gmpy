@@ -100,6 +100,10 @@ mpfr Functions
 .. autofunction:: get_max_precision
 .. autofunction:: get_emax_max
 .. autofunction:: get_emin_min
+.. autofunction:: get_emax
+.. autofunction:: get_emin
+.. autofunction:: set_emax
+.. autofunction:: set_emin
 .. autofunction:: copy_sign
 .. autofunction:: can_round
 .. autofunction:: free_cache

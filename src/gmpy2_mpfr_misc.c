@@ -173,6 +173,64 @@ GMPy_MPFR_get_emax_max(PyObject *self, PyObject *args)
     return PyLong_FromSsize_t((Py_ssize_t)mpfr_get_emax_max());
 }
 
+PyDoc_STRVAR(GMPy_doc_mpfr_get_emax,
+"get_emax($module)\n--\n\n"
+"Return the maximum possible exponent for `mpfr`.");
+
+static PyObject *
+GMPy_MPFR_get_emax(PyObject *self, PyObject *args)
+{
+    return PyLong_FromSsize_t((Py_ssize_t)mpfr_get_emax());
+}
+
+PyDoc_STRVAR(GMPy_doc_mpfr_get_emin,
+"get_emin($module)\n--\n\n"
+"Return the minimum possible exponent for `mpfr`.");
+
+static PyObject *
+GMPy_MPFR_get_emin(PyObject *self, PyObject *args)
+{
+    return PyLong_FromSsize_t((Py_ssize_t)mpfr_get_emin());
+}
+
+PyDoc_STRVAR(GMPy_doc_mpfr_set_emax,
+"set_emax($module, emax, /)\n--\n\n"
+"Set the maximum possible exponent for `mpfr`.");
+
+static PyObject *
+GMPy_MPFR_set_emax(PyObject *self, PyObject *arg)
+{
+    Py_ssize_t emax = PyLong_AsSsize_t(arg);
+
+    if (emax == -1 && PyErr_Occurred()) {
+        return NULL;
+    }
+    if (mpfr_set_emax(emax)) {
+        VALUE_ERROR("invalid value for emax");
+        return NULL;
+    }
+    Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(GMPy_doc_mpfr_set_emin,
+"set_emin($module, emin, /)\n--\n\n"
+"Set the minimum possible exponent for `mpfr`.");
+
+static PyObject *
+GMPy_MPFR_set_emin(PyObject *self, PyObject *arg)
+{
+    Py_ssize_t emin = PyLong_AsSsize_t(arg);
+
+    if (emin == -1 && PyErr_Occurred()) {
+        return NULL;
+    }
+    if (mpfr_set_emin(emin)) {
+        VALUE_ERROR("invalid value for emin");
+        return NULL;
+    }
+    Py_RETURN_NONE;
+}
+
 PyDoc_STRVAR(GMPy_doc_mpfr_get_max_precision,
 "get_max_precision($module)\n--\n\n"
 "Return the maximum bits of precision that can be used for calculations.\n"
