@@ -85,6 +85,12 @@ You have seen, that if the precision is changed, then ``mpfr(float('1.2'))``
 differs from ``mpfr('1.2')``.  To take advantage of the higher precision
 provided by the `mpfr` type, always pass constants as strings.
 
+Note that `~context.emax`/`~context.emin` settings affect only normalization of
+the final result.  All computations internally use default values for maximal
+and minimal exponents, that could be obtained with `get_emax` and `get_emin`.
+You could set bigger values with `set_emax`/`set_emin`.  Platform-dependent
+limits for those values could be obtained by `get_emax_max`/`get_emin_min`.
+
 Floating point contexts also are used to control exceptional conditions.  For
 example, division by zero can either return a floating-point positive infinity
 (default) or raise an exception.
