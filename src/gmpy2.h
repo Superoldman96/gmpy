@@ -312,8 +312,6 @@ typedef struct {
 #endif
 
 #if defined(MS_WIN32) && defined(_MSC_VER)
-   /* so one won't need to link explicitly to gmp.lib...: */
-#  pragma comment(lib,"gmp.lib")
 #  define USE_ALLOCA 1
 #  define inline __inline
 #endif

@@ -41,10 +41,6 @@ extern "C" {
  * This file is expected to be included from gmpy.h
  */
 
-#if defined(MS_WIN32) && defined(_MSC_VER)
-#  pragma comment(lib,"mpc.lib")
-#endif
-
 static PyTypeObject MPC_Type;
 #define MPC_Check(v) (((PyObject*)v)->ob_type == &MPC_Type)
 

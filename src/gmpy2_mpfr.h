@@ -40,10 +40,6 @@
 extern "C" {
 #endif
 
-#if defined(MS_WIN32) && defined(_MSC_VER)
-#  pragma comment(lib,"mpfr.lib")
-#endif
-
 static PyTypeObject MPFR_Type;
 #define MPFR_Check(v) (((PyObject*)v)->ob_type == &MPFR_Type)
 
