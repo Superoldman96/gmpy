@@ -40,11 +40,6 @@
 extern "C" {
 #endif
 
-
-#if !defined(FLT_RADIX) || (FLT_RADIX!=2)
-#   error "FLT_RADIX undefined or != 2, GMPY2 is confused. :("
-#endif
-
 #if defined(MS_WIN32) && defined(_MSC_VER)
 #  pragma comment(lib,"mpfr.lib")
 #endif
