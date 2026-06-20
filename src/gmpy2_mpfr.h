@@ -40,69 +40,6 @@
 extern "C" {
 #endif
 
-
-#if !defined(FLT_RADIX) || (FLT_RADIX!=2)
-#   error "FLT_RADIX undefined or != 2, GMPY2 is confused. :("
-#endif
-
-#if defined(MS_WIN32) && defined(_MSC_VER)
-#  pragma comment(lib,"mpfr.lib")
-#endif
-
-#ifdef FAST
-
-/* Very bad code ahead. I've copied portions of mpfr-impl.h and
- * hacked them so they work. This code will only be enabled if you
- * specify the --fast option.
- */
-
-#define MPFR_THREAD_ATTR __thread
-__MPFR_DECLSPEC extern MPFR_THREAD_ATTR unsigned int __gmpfr_flags;
-__MPFR_DECLSPEC extern MPFR_THREAD_ATTR mpfr_exp_t   __gmpfr_emin;
-__MPFR_DECLSPEC extern MPFR_THREAD_ATTR mpfr_exp_t   __gmpfr_emax;
-
-/* Flags of __gmpfr_flags */
-#define MPFR_FLAGS_UNDERFLOW 1
-#define MPFR_FLAGS_OVERFLOW 2
-#define MPFR_FLAGS_NAN 4
-#define MPFR_FLAGS_INEXACT 8
-#define MPFR_FLAGS_ERANGE 16
-#define MPFR_FLAGS_DIVBY0 32
-#define MPFR_FLAGS_ALL (MPFR_FLAGS_UNDERFLOW | \
-                        MPFR_FLAGS_OVERFLOW  | \
-                        MPFR_FLAGS_NAN       | \
-                        MPFR_FLAGS_INEXACT   | \
-                        MPFR_FLAGS_ERANGE    | \
-                        MPFR_FLAGS_DIVBY0)
-
-/* Replace some common functions for direct access to the global vars */
-#define mpfr_get_emin() (__gmpfr_emin + 0)
-#define mpfr_get_emax() (__gmpfr_emax + 0)
-
-#define mpfr_clear_flags()      ((void) (__gmpfr_flags = 0))
-#define mpfr_clear_underflow()  ((void) (__gmpfr_flags &= MPFR_FLAGS_ALL ^ MPFR_FLAGS_UNDERFLOW))
-#define mpfr_clear_overflow()   ((void) (__gmpfr_flags &= MPFR_FLAGS_ALL ^ MPFR_FLAGS_OVERFLOW))
-#define mpfr_clear_nanflag()    ((void) (__gmpfr_flags &= MPFR_FLAGS_ALL ^ MPFR_FLAGS_NAN))
-#define mpfr_clear_inexflag()   ((void) (__gmpfr_flags &= MPFR_FLAGS_ALL ^ MPFR_FLAGS_INEXACT))
-#define mpfr_clear_erangeflag() ((void) (__gmpfr_flags &= MPFR_FLAGS_ALL ^ MPFR_FLAGS_ERANGE))
-#define mpfr_clear_divby0()     ((void) (__gmpfr_flags &= MPFR_FLAGS_ALL ^ MPFR_FLAGS_DIVBY0))
-#define mpfr_underflow_p()      ((int) (__gmpfr_flags & MPFR_FLAGS_UNDERFLOW))
-#define mpfr_overflow_p()       ((int) (__gmpfr_flags & MPFR_FLAGS_OVERFLOW))
-#define mpfr_nanflag_p()        ((int) (__gmpfr_flags & MPFR_FLAGS_NAN))
-#define mpfr_inexflag_p()       ((int) (__gmpfr_flags & MPFR_FLAGS_INEXACT))
-#define mpfr_erangeflag_p()     ((int) (__gmpfr_flags & MPFR_FLAGS_ERANGE))
-#define mpfr_divby0_p()         ((int) (__gmpfr_flags & MPFR_FLAGS_DIVBY0))
-
-#define mpfr_check_range(x,t,r) \
- ((((x)->_mpfr_exp) >= __gmpfr_emin && ((x)->_mpfr_exp) <= __gmpfr_emax) \
-  ? ((t) ? (__gmpfr_flags |= MPFR_FLAGS_INEXACT, (t)) : 0)               \
-  : mpfr_check_range(x,t,r))
-
-/* End of the really bad code. Hopefully.
- */
-
-#endif
-
 static PyTypeObject MPFR_Type;
 #define MPFR_Check(v) (((PyObject*)v)->ob_type == &MPFR_Type)
 

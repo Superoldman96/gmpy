@@ -18,9 +18,6 @@ else:
 class Gmpy2Build(build_ext):
     description = "Build gmpy2 with custom build options"
     user_options = build_ext.user_options + [
-        ('fast', None,
-         "Depend on MPFR and MPC internal implementations details"
-         "(even more than the standard build)"),
         ('gcov', None, "Enable GCC code coverage collection"),
         ('static', None, "Enable static linking compile time options."),
         ('static-dir=', None, "Enable static linking and specify location."),
@@ -29,7 +26,6 @@ class Gmpy2Build(build_ext):
 
     def initialize_options(self):
         build_ext.initialize_options(self)
-        self.fast = False
         self.gcov = False
         self.static = False
         self.static_dir = False
@@ -38,8 +34,6 @@ class Gmpy2Build(build_ext):
     def finalize_options(self):
         build_ext.finalize_options(self)
         self.force = 1
-        if self.fast:
-            _comp_args.append('DFAST=1')
         if self.gcov:
             if ON_WINDOWS:
                 raise ValueError("Cannot enable GCC code coverage on Windows")
