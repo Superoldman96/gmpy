@@ -17,7 +17,7 @@ jobs:
             msystem: clangarm64
             menv: clang-aarch64
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: msys2/setup-msys2@v2
